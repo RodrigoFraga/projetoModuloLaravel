@@ -144,6 +144,8 @@ return [
         projetoModuloLaravel\Providers\AuthServiceProvider::class,
         projetoModuloLaravel\Providers\EventServiceProvider::class,
         projetoModuloLaravel\Providers\RouteServiceProvider::class,
+        projetoModuloLaravel\Providers\projetoModuloLaravelServiceProvider::class,
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
 
     ],
 

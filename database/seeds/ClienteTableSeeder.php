@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use projetoModuloLaravel\Cliente;
+use projetoModuloLaravel\Entities\Cliente;
 
 class ClienteTableSeeder extends Seeder
 {
