@@ -2,16 +2,17 @@
 
 namespace projetoModuloLaravel\Http\Controllers;
 
-use projetoModuloLaravel\Repositories\ClienteRepository;
-use projetoModuloLaravel\Services\ClienteService;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
+use projetoModuloLaravel\Repositories\ProjetoRepository;
+use projetoModuloLaravel\Services\ProjetoService;
 use Illuminate\Http\Request;
 
-class ClienteController extends Controller
+class ProjetoController extends Controller
 {
     private $repository;
     private $service;
 
-    public function __construct(ClienteRepository $repository, ClienteService $service)
+    public function __construct(ProjetoRepository $repository, ProjetoService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -24,7 +25,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        return $this->repository->all();
+        return $this->repository->findWhere(['owner_id' => Authorizer::getResourceOwnerId()]);
     }
 
     /**
@@ -46,6 +47,9 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
+        if($this->checkAutorizacao($id) == false){
+            return ['error' => 'Não Autorizado'];
+        }
         return $this->repository->find($id);
     }
 
@@ -58,6 +62,10 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($this->checkProjetoOwner($id) == false){
+            return ['error' => 'erro forbiden'];
+        }
+
         return $this->service->update($request->all(), $id);
     }
 
@@ -69,6 +77,31 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
+        if($this->checkProjetoOwner($id) == false){
+            return ['error' => 'erro forbiden'];
+        }
+
         $this->repository->delete($id);
+    }
+
+    private function checkProjetoOwner($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+        
+        return $this->repository->isOwner($projetoId, $userId);
+    }
+
+    private function checkProjetoMenbro($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+        
+        return $this->repository->hasMenbro($projetoId, $userId);
+    }
+
+    private function checkAutorizacao($projetoId){
+        if($this->checkProjetoOwner($projetoId) or $this->checkProjetoMenbro($projetoId)){
+            return true;
+        }
+        return false;
     }
 }

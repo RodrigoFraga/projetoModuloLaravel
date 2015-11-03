@@ -30,3 +30,23 @@ $factory->define(projetoModuloLaravel\Entities\Cliente::class, function (Faker\G
         'obs' => $faker->sentence
     ];
 });
+
+$factory->define(projetoModuloLaravel\Entities\Projeto::class, function (Faker\Generator $faker) {
+    return [
+        'owner_id' => rand(1,10),
+        'cliente_id' => rand(1,10),
+        'nome' => $faker->word,
+        'descricao' => $faker->sentence,
+        'progresso' => rand(1,100),
+        'status' => rand(1,3),
+        'due_date' => $faker->dateTime('now')
+    ];
+});
+
+$factory->define(projetoModuloLaravel\Entities\ProjetoNota::class, function (Faker\Generator $faker) {
+    return [
+        'projeto_id' => rand(1,10),
+        'titulo' => $faker->word,
+        'conteudo' => $faker->paragraph
+    ];
+});

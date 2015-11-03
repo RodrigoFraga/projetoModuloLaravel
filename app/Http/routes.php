@@ -15,9 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('cliente', 'ClienteController@index');
-Route::post('cliente', 'ClienteController@salva');
-Route::get('cliente/{id}', 'ClienteController@show');
-Route::delete('cliente/{id}', 'ClienteController@destroy');
-Route::put('cliente/{id}', 'ClienteController@atualiza');
+Route::post('oauth/access_token', function(){
+	return Response::json(Authorizer::issueAccessToken());
+});
+
+Route::group(['middleware'=>'oauth'], function(){
+	Route::resource('cliente', 'ClienteController', ['except'=>['create', 'edit']]);
+	Route::resource('projeto', 'ProjetoController', ['except'=>['create', 'edit']]);
+
+	Route::group(['prefix'=>'projeto'], function(){
+		
+		Route::get('{id}/nota', 'ProjetoNotaController@index');
+		Route::post('{id}/nota', 'ProjetoNotaController@store');
+		Route::get('{id}/nota/{notaId}', 'ProjetoNotaController@show');
+		Route::put('{id}/nota/{notaId}', 'ProjetoNotaController@update');
+		Route::delete('{id}/nota/{notaId}', 'ProjetoNotaController@destroy');
+	});
+});
 

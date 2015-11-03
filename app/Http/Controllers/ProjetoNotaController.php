@@ -2,16 +2,16 @@
 
 namespace projetoModuloLaravel\Http\Controllers;
 
-use projetoModuloLaravel\Repositories\ClienteRepository;
-use projetoModuloLaravel\Services\ClienteService;
+use projetoModuloLaravel\Repositories\ProjetoNotaRepository;
+use projetoModuloLaravel\Services\ProjetoNotaService;
 use Illuminate\Http\Request;
 
-class ClienteController extends Controller
+class ProjetoNotaController extends Controller
 {
     private $repository;
     private $service;
 
-    public function __construct(ClienteRepository $repository, ClienteService $service)
+    public function __construct(ProjetoNotaRepository $repository, ProjetoNotaService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -22,9 +22,9 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return $this->repository->all();
+        return $this->repository->findWhere(['projeto_id' => $id]);
     }
 
     /**
@@ -33,7 +33,7 @@ class ClienteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         return $this->service->create($request->all());
     }
@@ -44,9 +44,9 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $notaId)
     {
-        return $this->repository->find($id);
+        return $this->repository->findWhere(['projeto_id'=>$id, 'id'=>$notaId]);
     }
 
     /**
@@ -56,9 +56,9 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $notaId)
     {
-        return $this->service->update($request->all(), $id);
+        return $this->service->update($request->all(), $notaId);
     }
 
     /**
@@ -67,8 +67,8 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $notaId)
     {
-        $this->repository->delete($id);
+        $this->repository->delete($notaId);
     }
 }
