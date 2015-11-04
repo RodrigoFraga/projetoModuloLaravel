@@ -32,9 +32,9 @@ config.vendor_path_css = [
 ];
 
 gulp.task('copy-styles', function(){
-	gulp.src([
+	gulp.src(
 			config.assets_path + '/css/**/*.css'
-		])
+		)
 		.pipe(gulp.desc(config.build_path_css))
 		.pipe(liveReload());
 
@@ -45,9 +45,9 @@ gulp.task('copy-styles', function(){
 
 
 gulp.task('copy-scripts', function(){
-	gulp.src([
+	gulp.src(
 			config.assets_path + '/js/**/*.js'
-		])
+		)
 		.pipe(gulp.desc(config.build_path_js))
 		.pipe(liveReload());
 
@@ -56,8 +56,18 @@ gulp.task('copy-scripts', function(){
 		.pipe(liveReload());
 });
 
-gulp-task('clear-build-folder', function(){
-	clean.sync(config.build_path);
+gulp.task('clear-build-folder', function(){
+	clean.sync(config.build_path);	
+});
+
+gulp.task('default',['clear-build-folder'], function(){
+	elixir(function(mix) {
+    	mix.styles(config.vendor_path_css.concat([config.assets_path + '/css/**/*.css']),
+    		'public/css/all.css', config.assets_path);
+    	mix.scripts(config.vendor_path_js.concat([config.assets_path + '/js/**/*.css']),
+    		'public/js/all.js', config.assets_path);
+    	mix.version(['js/all.js', 'css/all.css']);
+	});
 });
 
 gulp.task('watch-dev', ['clear-build-folder'], function(){
@@ -66,17 +76,5 @@ gulp.task('watch-dev', ['clear-build-folder'], function(){
 	gulp.watch(config.assets_path + '/**', ['copy-styles', 'copy-scripts']);
 });
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
- |
- */
 
-elixir(function(mix) {
-    mix.sass('app.scss');
-});
+
