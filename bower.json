@@ -1,15 +1,13 @@
 {
   "name": "projetoModuloLaravel",
-  "description": "frontend do gerenciador de projetos",
+  "description": "Vamos la q vai funcionar",
   "main": "",
   "authors": [
     "Fraga <rodrigofraga6@gmail.com>"
   ],
   "license": "MIT",
   "homepage": "https://github.com/RodrigoFraga/projetoModuloLaravel",
-  "moduleType": [
-    "amd"
-  ],
+  "moduleType": [],
   "ignore": [
     "**/.*",
     "node_modules",
@@ -26,6 +24,7 @@
     "angular-messages": "1.4.1",
     "angular-bootstrap": "0.13.0",
     "angular-strap": "2.2.4",
-    "bootstrap": "3.3.5"
+    "bootstrap": "3.3.5",
+    "angular-oauth2": "~3.0.1"
   }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +7,10 @@
 	<title>Laravel</title>
 
 	@if(Config::get('app.debug'))
-		<link rel="stylesheet" href="{{asset('build/css/vendor/bootstrap.min.css')}}">
-		<link rel="stylesheet" href="{{asset('build/css/vendor/bootstrap-theme.min.css')}}">
+		<link rel="stylesheet" href="{{asset('build/css/app.css')}}">
+		<link rel="stylesheet" href="{{asset('build/css/components.css')}}">
+		<link rel="stylesheet" href="{{asset('build/css/flaticon.css')}}">
+		<link rel="stylesheet" href="{{asset('build/css/font-awesome.css')}}">
 	@else
 		<link rel="stylesheet" href="{{elixir('css/all.css')}}">
 	@endif
@@ -62,7 +64,7 @@
 		</div>
 	</nav>
 
-	@yield('content')
+	<div ng-view></div>
 
 	@if(Config::get('app.debug'))
 		<script src="{{asset('build/js/vendor/jquery.min.js')}}"></script>
@@ -73,8 +75,31 @@
 		<script src="{{asset('build/js/vendor/angular-messages.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/ui-bootstrap.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/navbar.min.js')}}"></script>
+		<script src="{{asset('build/js/vendor/angular-cookies.min.js')}}"></script>
+		<script src="{{asset('build/js/vendor/angular-oauth2.min.js')}}"></script>
+		<script src="{{asset('build/js/vendor/query-string.js')}}"></script>
+		
+		<script src="{{asset('build/js/app.js')}}"></script>
+
+		<!-- CONTROLLER -->
+		<script src="{{asset('build/js/controllers/login.js')}}"></script>
+		<script src="{{asset('build/js/controllers/home.js')}}"></script>
+		<script src="{{asset('build/js/controllers/cliente/clienteLista.js')}}"></script>
+		<script src="{{asset('build/js/controllers/cliente/clienteNovo.js')}}"></script>
+		<script src="{{asset('build/js/controllers/cliente/clienteEdita.js')}}"></script>
+		<script src="{{asset('build/js/controllers/cliente/clienteRemove.js')}}"></script>
+
+		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaLista.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaShow.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaNovo.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaEdita.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaRemove.js')}}"></script>
+
+		<!-- SERVICES -->
+		<script src="{{asset('build/js/services/cliente.js')}}"></script>
+		<script src="{{asset('build/js/services/projetoNota.js')}}"></script>
 	@else
-		<script src="{{alixir('js/all.js')}}"></script>
+		<script src="{{elixir('js/all.js')}}"></script>
 	@endif
 </body>
 </html>
