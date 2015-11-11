@@ -1,0 +1,80 @@
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">Cadastro de Cliente</div>
+				<div class="panel-body">
+
+					<form class="form-horizontal" name="form" role="form" method="POST" ng-submit="save()">
+
+						<div class="form-group" ng-class="{'has-error': !form.nome.$valid && form.nome.$touched}">
+							<label class="col-md-4 control-label">Nome</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="nome" ng-model="cliente.nome" required>
+								<div ng-messages="form.nome.$error" class="help-block" ng-show="form.nome.$touched">
+									<div ng-message="required">Campo Obrigatorio</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error': !form.responsavel.$valid && form.responsavel.$touched}">
+							<label class="col-md-4 control-label">Responsavel</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="responsavel" ng-model="cliente.responsavel" required>
+								<div ng-messages="form.responsavel.$error" class="help-block" ng-show="form.responsavel.$touched">
+									<div ng-message="required">Campo Obrigatorio</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error': !form.email.$valid && form.email.$touched}">
+							<label class="col-md-4 control-label">E-mail</label>
+							<div class="col-md-6">
+								<input type="email" class="form-control" name="email" ng-model="cliente.email" required>
+								<div ng-messages="form.email.$error" class="help-block" ng-show="form.email.$touched">
+									<div ng-message="required">Campo Obrigatorio</div>
+									<div ng-message="email">Campo Obrigatorio</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error': !form.telefone.$valid && form.telefone.$touched}">
+							<label class="col-md-4 control-label">Telefone</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="telefone" ng-model="cliente.telefone" required>
+								<div ng-messages="form.telefone.$error" class="help-block" ng-show="form.telefone.$touched">
+									<div ng-message="required">Campo Obrigatorio</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error': !form.end.$valid && form.end.$touched}">
+							<label class="col-md-4 control-label">Endereço</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="end" ng-model="cliente.end" required>
+								<div ng-messages="form.end.$error" class="help-block" ng-show="form.end.$touched">
+									<div ng-message="required">Campo Obrigatorio</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Obs.</label>
+							<div class="col-md-6">
+								<textarea class="form-control" name="obs" ng-model="cliente.obs"> </textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="submit" class="btn btn-primary">Salvar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

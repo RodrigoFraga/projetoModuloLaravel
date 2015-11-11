@@ -19,7 +19,7 @@ Route::post('oauth/access_token', function(){
 	return Response::json(Authorizer::issueAccessToken());
 });
 
-// Route::group(['middleware'=>'oauth'], function(){
+Route::group(['middleware'=>'oauth'], function(){
 	Route::resource('cliente', 'ClienteController', ['except'=>['create', 'edit']]);
 	Route::resource('projeto', 'ProjetoController', ['except'=>['create', 'edit']]);
 
@@ -31,5 +31,5 @@ Route::post('oauth/access_token', function(){
 		Route::put('{id}/nota/{notaId}', 'ProjetoNotaController@update');
 		Route::delete('{id}/nota/{notaId}', 'ProjetoNotaController@destroy');
 	});
-// });
+});
 

@@ -4,16 +4,14 @@ namespace projetoModuloLaravel\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use projetoModuloLaravel\Repositories\ProjetoNotaRepository;
-use projetoModuloLaravel\Entities\ProjetoNota;
-use projetoModuloLaravel\Presenters\ProjetoNotaPresenter;
-
+use projetoModuloLaravel\Repositories\TesteRepository;
+use projetoModuloLaravel\Entities\Teste;
 
 /**
- * Class ProjetoNotaRepositoryEloquent
+ * Class TesteRepositoryEloquent
  * @package namespace projetoModuloLaravel\Repositories;
  */
-class ProjetoNotaRepositoryEloquent extends BaseRepository implements ProjetoNotaRepository
+class TesteRepositoryEloquent extends BaseRepository implements TesteRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +20,7 @@ class ProjetoNotaRepositoryEloquent extends BaseRepository implements ProjetoNot
      */
     public function model()
     {
-        return ProjetoNota::class;
+        return Teste::class;
     }
 
     /**
@@ -31,10 +29,5 @@ class ProjetoNotaRepositoryEloquent extends BaseRepository implements ProjetoNot
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function presenter()
-    {
-        return ProjetoNotaPresenter::class;
     }
 }

@@ -46,7 +46,13 @@ class ProjetoNotaController extends Controller
      */
     public function show($id, $notaId)
     {
-        return $this->repository->findWhere(['projeto_id'=>$id, 'id'=>$notaId]);
+        $resultado = $this->repository->findWhere(['projeto_id'=>$id, 'id'=>$notaId]);
+        if (isset($resultado['data']) && count($resultado['data'])==1) {
+            $resultado =[
+                'data'  =>  $resultado['data'][0]
+            ];
+        }
+        return $resultado;
     }
 
     /**
