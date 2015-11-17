@@ -21,7 +21,7 @@ Route::post('oauth/access_token', function(){
 
 Route::group(['middleware'=>'oauth'], function(){
 	Route::resource('cliente', 'ClienteController', ['except'=>['create', 'edit']]);
-	Route::resource('projeto', 'ProjetoController', ['except'=>['create', 'edit']]);
+	Route::resource('projetos', 'ProjetoController', ['except'=>['create', 'edit']]);
 
 	Route::group(['prefix'=>'projeto'], function(){
 		
@@ -31,5 +31,7 @@ Route::group(['middleware'=>'oauth'], function(){
 		Route::put('{id}/nota/{notaId}', 'ProjetoNotaController@update');
 		Route::delete('{id}/nota/{notaId}', 'ProjetoNotaController@destroy');
 	});
+
+	Route::get('user/authenticated', 'UserController@authenticated');
 });
 

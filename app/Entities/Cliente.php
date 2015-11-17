@@ -14,4 +14,9 @@ class Cliente extends Model
 		'end',
 		'obs'
 	];
+
+	public function projetos()
+	{
+		return $this->hasMany(Projeto::class);
+	}
 }

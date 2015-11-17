@@ -28,4 +28,8 @@ class Projeto extends Model implements Transformable
         return $this->belongsToMany(User::class, 'projeto_menbros', 'projeto_id', 'menbro_id');
     }
 
+    public function cliente(){
+        return $this->belongsTo(Cliente::class);
+    }
+
 }

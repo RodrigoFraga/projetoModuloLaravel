@@ -57,6 +57,22 @@ app.config([
 				templateUrl: 'build/views/cliente/remove.html',
 				controller: 'ClientRemoveController'
 			})
+			.when('/projetos', {
+				templateUrl: 'build/views/projeto/lista.html',
+				controller: 'ProjetoListaController'
+			})
+			.when('projetos/novo', {
+				templateUrl: 'build/views/projeto/novo.html',
+				controller: 'ProjetoNovoController'
+			})
+			.when('/projetos/:id/edita', {
+				templateUrl: 'build/views/projeto/edita.html',
+				controller: 'ProjetoEditaController'
+			})
+			.when('/projeto/:id/remove', {
+				templateUrl: 'build/views/projeto/remove.html',
+				controller: 'ProjetoRemoveController'
+			})
 			.when('/projeto/:id/nota', {
 				templateUrl: 'build/views/projeto-nota/lista.html',
 				controller: 'ProjetoNotaListaController'

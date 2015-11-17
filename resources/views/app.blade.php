@@ -75,19 +75,25 @@
 		<script src="{{asset('build/js/vendor/angular-messages.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/ui-bootstrap.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/navbar.min.js')}}"></script>
+		<script src="{{asset('build/js/vendor/query-string.js')}}"></script>
 		<script src="{{asset('build/js/vendor/angular-cookies.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/angular-oauth2.min.js')}}"></script>
-		<script src="{{asset('build/js/vendor/query-string.js')}}"></script>
 		
 		<script src="{{asset('build/js/app.js')}}"></script>
 
 		<!-- CONTROLLER -->
 		<script src="{{asset('build/js/controllers/login.js')}}"></script>
 		<script src="{{asset('build/js/controllers/home.js')}}"></script>
+		
 		<script src="{{asset('build/js/controllers/cliente/clienteLista.js')}}"></script>
 		<script src="{{asset('build/js/controllers/cliente/clienteNovo.js')}}"></script>
 		<script src="{{asset('build/js/controllers/cliente/clienteEdita.js')}}"></script>
 		<script src="{{asset('build/js/controllers/cliente/clienteRemove.js')}}"></script>
+
+		<script src="{{asset('build/js/controllers/projeto/projetoLista.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto/projetoNovo.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto/projetoEdita.js')}}"></script>
+		<script src="{{asset('build/js/controllers/projeto/projetoRemove.js')}}"></script>
 
 		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaLista.js')}}"></script>
 		<script src="{{asset('build/js/controllers/projeto-nota/projetoNotaShow.js')}}"></script>
@@ -97,7 +103,9 @@
 
 		<!-- SERVICES -->
 		<script src="{{asset('build/js/services/cliente.js')}}"></script>
+		<script src="{{asset('build/js/services/projeto.js')}}"></script>
 		<script src="{{asset('build/js/services/projetoNota.js')}}"></script>
+		<script src="{{asset('build/js/services/user.js')}}"></script>
 	@else
 		<script src="{{elixir('js/all.js')}}"></script>
 	@endif
