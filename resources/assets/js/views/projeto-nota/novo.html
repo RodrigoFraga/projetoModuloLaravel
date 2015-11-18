@@ -19,10 +19,14 @@
 						</div>
 
 						<div class="form-group" ng-class="{'has-error': !form.conteudo.$valid && form.conteudo.$touched}">
-							<label class="col-md-4 control-label">Titulo</label>
+							<label class="col-md-4 control-label">Conteudo</label>
+							
 							<div class="col-md-6">
 								<div class="col-md-6">
-									<textarea class="form-control" name="conteudo" ng-model="projetoNota.conteudo"> </textarea>
+									<textarea class="form-control" name="conteudo" ng-model="projetoNota.conteudo" required> </textarea>
+									<div ng-messages="form.conteudo.$error" class="help-block" ng-show="form.conteudo.$touched">
+									<div ng-message="required">Campo Obrigatorio</div>
+								</div>
 								</div>
 							</div>
 						</div>

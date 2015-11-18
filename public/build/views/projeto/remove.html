@@ -3,14 +3,14 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Exclusão de Cliente</div>
+				<div class="panel-heading">Exclusão de Projeto</div>
 				<div class="panel-body">
 					<div class="form-group">
 						<div class="col-md-6 col-md-offset-4">
-							<p>Deseja excluir realmente essa nota de Projeto ?</p>
+							<p>Deseja excluir realmente excluir este Projeto ?</p>
 							<ul>
-								<li><strong>Tirulo</strong> {{ projetoNota.titulo }}</li>
-								<li><strong>Conteudo</strong> {{ projetoNota.conteudo }}</li>
+								<li><strong>Nome</strong> {{ projeto.nome }}</li>
+								<li><strong>Cliente</strong> {{ projeto.cliente.nome }}</li>
 							</ul>
 							<button type="butto" class="btn btn-danger" ng-click="remove()">
 								Excluir

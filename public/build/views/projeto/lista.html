@@ -3,13 +3,13 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Lista de Notas de Projeto</div>
+				<div class="panel-heading">Lista de Projeto</div>
 				<div class="panel-body">
 				<table class="table">
 					<thead>
 						<tr>
 							<th>Nome</th>
-							<th>Menbro</th>
+							<th>Cliente</th>
 							<th>Progresso</th>
 							<th>Status</th>
 							<th>Due Date</th>
@@ -18,10 +18,10 @@
 					<tbody>
 						<tr ng-repeat="projeto in projetos">
 							<td>{{projeto.nome}}</td>
-							<td>{{projeto.cliente.data.nome}}</td>
+							<td>{{projeto.cliente.nome}}</td>
 							<td>{{projeto.progresso}}</td>
 							<td>{{projeto.status}}</td>
-							<td>{{projeto.due_date}}</td>
+							<td>{{projeto.due_date | dateBr}}</td>
 							<td>
 								<a ng-href="#/projetos/{{projeto.id}}/edita">Editar</a> | 
 								<a ng-href="#/projetos/{{projeto.id}}/remove">Remover</a>
