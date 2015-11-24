@@ -30,6 +30,11 @@ Route::group(['middleware'=>'oauth'], function(){
 		Route::get('{id}/nota/{notaId}', 'ProjetoNotaController@show');
 		Route::put('{id}/nota/{notaId}', 'ProjetoNotaController@update');
 		Route::delete('{id}/nota/{notaId}', 'ProjetoNotaController@destroy');
+
+		Route::resource('{id}/task', 'ProjetoTaskController', ['except'=>['create', 'edit']]);
+		
+		Route::get('{id}/menbros', 'ProjetoController@menbros');
+
 	});
 
 	Route::get('user/authenticated', 'UserController@authenticated');

@@ -2,17 +2,17 @@
 
 namespace projetoModuloLaravel\Services;
 
-use projetoModuloLaravel\Repositories\ProjetoRepository;
-use projetoModuloLaravel\Validators\ProjetoValidator;
+use projetoModuloLaravel\Repositories\ProjetoTaskRepository;
+use projetoModuloLaravel\Validators\ProjetoTaskValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class projetoService
+class ProjetoTaskService
 {
 
 	protected $repository;
 	protected $validator;
 
-	public function __construct(ProjetoRepository $repository, ProjetoValidator $validator)
+	public function __construct(ProjetoTaskRepository $repository, ProjetoTaskValidator $validator)
 	{
 		$this->repository = $repository;
 		$this->validator = $validator;
@@ -42,20 +42,5 @@ class projetoService
 				'message' => $e->getMessageBag()
 			];
 		}
-	}
-
-	public function addMenbro()
-	{
-		// 
-	}
-
-	public function removeMenbro()
-	{
-		// 
-	}
-
-	public function isMenbro()
-	{
-		// 
 	}
 }

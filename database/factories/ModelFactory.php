@@ -50,3 +50,13 @@ $factory->define(projetoModuloLaravel\Entities\ProjetoNota::class, function (Fak
         'conteudo' => $faker->paragraph
     ];
 });
+
+$factory->define(projetoModuloLaravel\Entities\Projeto::class, function (Faker\Generator $faker) {
+    return [
+        'projeto_id' => rand(1,10),
+        'nome' => $faker->word,
+        'start_date' => $faker->dateTime(),
+        'due_date' => $faker->dateTime('now'),
+        'status' => rand(1,3),
+    ];
+});

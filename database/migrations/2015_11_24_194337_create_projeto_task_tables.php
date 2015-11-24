@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjetoNotasTable extends Migration
+class CreateProjetoTaskTables extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,14 @@ class CreateProjetoNotasTable extends Migration
      */
     public function up()
     {
-        Schema::create('projeto_notas', function (Blueprint $table) {
+        Schema::create('projeto_tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('projeto_id')->unsigned();
             $table->foreign('projeto_id')->references('id')->on('projetos')->onDelete('cascade');
-            $table->string('titulo');
-            $table->text('conteudo');
+            $table->string('nome');
+            $table->date('start_date');
+            $table->date('due_date');
+            $table->smallInteger('status');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateProjetoNotasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('projeto_notas');
+        Schema::drop('projeto_tasks');
     }
 }
