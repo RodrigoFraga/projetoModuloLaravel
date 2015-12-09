@@ -51,7 +51,7 @@ $factory->define(projetoModuloLaravel\Entities\ProjetoNota::class, function (Fak
     ];
 });
 
-$factory->define(projetoModuloLaravel\Entities\Projeto::class, function (Faker\Generator $faker) {
+$factory->define(projetoModuloLaravel\Entities\ProjetoTask::class, function (Faker\Generator $faker) {
     return [
         'projeto_id' => rand(1,10),
         'nome' => $faker->word,

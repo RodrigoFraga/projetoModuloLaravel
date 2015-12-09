@@ -21,9 +21,12 @@
 						<div class="form-group" ng-class="{'has-error': !form.descricao.$valid && form.descricao.$touched}">
 							<label class="col-md-4 control-label">Descrição</label>
 							<div class="col-md-6">
-								<div class="col-md-6">
-									<textarea class="form-control" name="descricao" ng-model="projeto.descricao" required> </textarea>
-								</div>
+								<textarea  
+                                    class="form-control input-sm"
+									name="descricao"
+									ng-model="projeto.descricao"
+									required> 
+								</textarea>
 							</div>
 						</div>
 

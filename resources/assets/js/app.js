@@ -46,13 +46,22 @@ app.config([
  		
  		$httpProvider.defaults.headers.post['content-type'] = 'application/x-www-form-urlencoded;charset=utf-8';
  		$httpProvider.defaults.headers.put['content-type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-
  		$httpProvider.defaults.transformResponse = appConfigProvider.config.utils.transformResponse;
+
+ 		$httpProvider.interceptors.push('oauthFixInterceptor');
 
 		$routeProvider
 			.when('/login',{
 				templateUrl: 'build/views/login.html',
 				controller: 'LoginController'
+			})
+			.when('/logout',{
+				resolve: {
+					logout: ['$location','OAuthToken', function($location, OAuthToken){
+						OAuthToken.removeToken();
+						$location.path('/login');
+					}]
+				}
 			})
 			.when('/home',{
 				templateUrl: 'build/views/home.html',
@@ -128,19 +137,47 @@ app.config([
 	    });
 }]);
 
-app.run(['$rootScope', '$window', 'OAuth', function($rootScope, $window, OAuth) {
-    $rootScope.$on('oauth:error', function(event, rejection) {
+app.run(['$rootScope', '$location', '$http', 'OAuth', function($rootScope, $location, $http, OAuth) {
+
+	// event. É o evento atual 
+	// next . É a proxima rota que o usuario quer acessar
+	// next . É rota atual que o usuario está acessando  obs. ela pode vir undefined pois pode não haver rota anterioir
+	$rootScope.$on('$routeChangeStart', function(event, next, current){
+		if (next.$$route.originalPath != '/login'){
+			// Verifica se o usuario está logado
+			if (!OAuth.isAuthenticated()){
+				$location.path('/login');
+			};
+		};
+	});
+
+    $rootScope.$on('oauth:error', function(event, data) {
 	      // Ignore `invalid_grant` error - should be catched on `LoginController`.
-	      if ('invalid_grant' === rejection.data.error) {
+	      if ('invalid_grant' === data.rejection.data.error) {
 	        return;
 	      }
 
 	      // Refresh token when a `invalid_token` error occurs.
-	      if ('invalid_token' === rejection.data.error) {
-	        return OAuth.getRefreshToken();
+	      if ('access_denied' === data.rejection.data.error) {
+	      		// posibilita que seja enviado uma nova requisição para gerear o token
+	      		// o IF é usado pois em multiplas requisições quando a primeira atualizar o token as outras vão 
+	      		// passar o token errado
+	      	if (!$rootScope.isRefreshingToken) {
+	      		$rootScope.isRefreshingToken = true;
+				return OAuth.getRefreshToken().then(function(response){
+	      				$rootScope.isRefreshingToken = false;
+						return $http(data.rejection.config).then(function(response){
+							return data.deferred.resolve(response);
+						})
+				});
+			}else{
+				return $http(data.rejection.config).then(function(response){
+					return data.deferred.resolve(response);
+				})
+			}
 	      }
 
 	      // Redirect to `/login` with the `error_reason`.
-	      return $window.location.href = '/login?error_reason=' + rejection.data.error;
+	      return $location.path('/login');
 	    });
    }]);

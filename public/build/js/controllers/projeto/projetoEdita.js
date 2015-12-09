@@ -5,7 +5,7 @@ angular.module('app.controllers')
 
 		Projeto.get({id: $routeParams.id}, function (data){
 			$scope.projeto = data;
-			$scope.clienteSelected = data.cliente;
+			$scope.clienteSelected = data.cliente.data;
 		});
 		$scope.status = appConfig.projeto.status;
 

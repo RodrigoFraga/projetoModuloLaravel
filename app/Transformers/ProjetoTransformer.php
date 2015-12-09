@@ -10,7 +10,7 @@ use League\Fractal\TransformerAbstract;
 */
 class ProjetoTransformer extends TransformerAbstract
 {
-	protected $defaultIncludes = ['menbro'];
+	protected $defaultIncludes = ['menbro', 'cliente'];
 
 	public function transform(Projeto $projeto)
 	{
@@ -23,7 +23,6 @@ class ProjetoTransformer extends TransformerAbstract
 			'progresso' => (int) $projeto->progresso,
 			'status' => $projeto->status,
 			'due_date' => $projeto->due_date,
-			'cliente' => $projeto->cliente
 		];
 	}
 
@@ -31,8 +30,8 @@ class ProjetoTransformer extends TransformerAbstract
 	{
 		return $this->collection($projeto->menbros, new ProjetoMenbroTransformer());
 	}
-	// public function includeCliente(Projeto $projeto)
-	// {
-	// 	return $this->collection($projeto->cliente, new ClienteTransformer());
-	// }
+	public function includeCliente(Projeto $projeto)
+	{
+		return $this->item($projeto->cliente, new ClienteTransformer());
+	}
 }
