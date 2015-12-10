@@ -7,6 +7,7 @@ angular.module('app.controllers')
 			$scope.projeto = data;
 			$scope.clienteSelected = data.cliente.data;
 		});
+
 		$scope.status = appConfig.projeto.status;
 
 		$scope.save = function(){
