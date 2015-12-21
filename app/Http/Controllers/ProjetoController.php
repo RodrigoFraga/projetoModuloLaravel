@@ -25,7 +25,7 @@ class ProjetoController extends Controller
      */
     public function index()
     {
-        return $this->repository->findWhere(['owner_id' => Authorizer::getResourceOwnerId()]);
+        return $this->repository->findOwner(Authorizer::getResourceOwnerId(), 4);
     }
 
     /**

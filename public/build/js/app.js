@@ -1,6 +1,11 @@
 var app = angular.module('app',[
-	'ngRoute', 'angular-oauth2','app.controllers', 'app.filters', 'app.directives', 'app.services', 'http-auth-interceptor',
-	"ui.bootstrap.typeahead", "ui.bootstrap.datepicker", 'ui.bootstrap.modal', "ui.bootstrap.tpls"
+	'ngRoute', 'angular-oauth2','app.controllers', 'app.filters', 'app.directives', 'app.services',
+	'http-auth-interceptor',
+	"ui.bootstrap.typeahead",
+	"ui.bootstrap.datepicker",
+	'ui.bootstrap.modal',
+	"ui.bootstrap.tpls",
+	'ngTable',
 ]);
 
 angular.module('app.controllers',['ngMessages','angular-oauth2']);
@@ -23,7 +28,7 @@ app.provider('appConfig', function(){
 				var headersGetter = headers();
 				if (headersGetter['content-type'] == 'application/json') {
 					var dataJson = JSON.parse(data);
-					if (dataJson.hasOwnProperty('data')) {
+					if (dataJson.hasOwnProperty('data') && Object.keys(dataJson).length == 1) {
 						dataJson = dataJson.data;
 					};
 					return dataJson;

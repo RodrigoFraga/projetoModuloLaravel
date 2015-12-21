@@ -1,11 +1,34 @@
-
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">Lista de Projeto</div>
 				<div class="panel-body">
-				<table class="table">
+
+				<table ng-table="tableParams" class="table" show-filter="true">
+				    <tr ng-repeat="projeto in $data">
+				        <td title="'Nome'" sortable="'nome'">
+				            {{projeto.nome}}
+				        </td>
+				        <td title="'Cliente'" >
+				            {{projeto.cliente.nome}}
+				        </td>
+				        <td title="'Progresso'" >
+				        	{{projeto.progresso}}
+				        </td>
+						<td title="'Status'" >
+							{{projeto.status}}
+						</td>
+						<td title="'Due Dade'" >
+							{{projeto.due_date | dateBr}}
+						</td>
+						<td>
+							<a ng-href="#/projetos/{{projeto.id}}/edita">Editar</a> | 
+							<a ng-href="#/projetos/{{projeto.id}}/remove">Remover</a>
+						</td>
+				    </tr>
+				</table>
+				<!-- <table class="table">
 					<thead>
 						<tr>
 							<th>Nome</th>
@@ -28,7 +51,7 @@
 							</td>
 						</tr>
 					</tbody>
-				</table>
+				</table> -->
 				</div>
 			</div>
 		</div>

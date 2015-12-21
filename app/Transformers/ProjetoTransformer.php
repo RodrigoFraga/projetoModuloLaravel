@@ -32,6 +32,8 @@ class ProjetoTransformer extends TransformerAbstract
 	}
 	public function includeCliente(Projeto $projeto)
 	{
-		return $this->item($projeto->cliente, new ClienteTransformer());
+		if (!is_null($projeto->cliente)) {
+			return $this->item($projeto->cliente, new ClienteTransformer());
+		}
 	}
 }

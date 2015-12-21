@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="{{asset('build/css/components.css')}}">
 		<link rel="stylesheet" href="{{asset('build/css/flaticon.css')}}">
 		<link rel="stylesheet" href="{{asset('build/css/font-awesome.css')}}">
+		<link rel="stylesheet" href="{{asset('build/css/vendor/ng-table.min.css')}}">
 	@else
 		<link rel="stylesheet" href="{{elixir('css/all.css')}}">
 	@endif
@@ -79,6 +80,7 @@
 		<script src="{{asset('build/js/vendor/angular-cookies.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/angular-oauth2.min.js')}}"></script>
 		<script src="{{asset('build/js/vendor/http-auth-interceptor.js')}}"></script>
+		<script src="{{asset('build/js/vendor/ng-table.min.js')}}"></script>
 		
 		<script src="{{asset('build/js/app.js')}}"></script>
 
