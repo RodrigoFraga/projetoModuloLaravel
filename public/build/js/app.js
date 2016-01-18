@@ -4,8 +4,10 @@ var app = angular.module('app',[
 	"ui.bootstrap.typeahead",
 	"ui.bootstrap.datepicker",
 	'ui.bootstrap.modal',
+	'ui.bootstrap.dropdown',
 	"ui.bootstrap.tpls",
 	'ngTable',
+	'mgcrea.ngStrap.navbar',
 ]);
 
 angular.module('app.controllers',['ngMessages','angular-oauth2']);
@@ -77,19 +79,23 @@ app.config([
 			})
 			.when('/clientes', {
 				templateUrl: 'build/views/cliente/lista.html',
-				controller: 'ClienteListaController'
+				controller: 'ClienteListaController',
+				title: 'Cliente',
 			})
 			.when('/clientes/novo', {
 				templateUrl: 'build/views/cliente/novo.html',
-				controller: 'ClienteNovoController'
+				controller: 'ClienteNovoController',
+				title: 'Cliente',
 			})
 			.when('/clientes/:id/edita', {
 				templateUrl: 'build/views/cliente/edita.html',
-				controller: 'ClienteEditaController'
+				controller: 'ClienteEditaController',
+				title: 'Cliente',
 			})
 			.when('/clientes/:id/remove', {
 				templateUrl: 'build/views/cliente/remove.html',
-				controller: 'ClientRemoveController'
+				controller: 'ClientRemoveController',
+				title: 'Cliente',
 			})
 			.when('/projetos', {
 				templateUrl: 'build/views/projeto/lista.html',
@@ -158,6 +164,9 @@ app.run(['$rootScope', '$location', '$modal', 'httpBuffer', 'OAuth',
 				$location.path('/login');
 			};
 		};
+	});
+	$rootScope.$on('$routeChangeSuccess', function(event, current, previous){
+		$rootScope.PageTitiulo = current.$$route.title;
 	});
 
     $rootScope.$on('oauth:error', function(event, data) {
