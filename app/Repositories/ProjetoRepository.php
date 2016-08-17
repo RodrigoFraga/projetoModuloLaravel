@@ -11,4 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface ProjetoRepository extends RepositoryInterface
 {
     //
+    public function findOrFail($id);
 }

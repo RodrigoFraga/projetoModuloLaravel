@@ -2,22 +2,41 @@
 
 namespace projetoModuloLaravel\Services;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use projetoModuloLaravel\Repositories\ProjetoFileRepository;
 use projetoModuloLaravel\Repositories\ProjetoRepository;
-use projetoModuloLaravel\Validators\ProjetoValidator;
+use projetoModuloLaravel\Validators\ProjetoFileValidator as Validator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class projetoService
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Factory as Storage;
+
+class ProjetoFileService
 {
 
     protected $repository;
     protected $validator;
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+    /**
+     * @var Storage
+     */
+    private $storage;
 
-    public function __construct(ProjetoRepository $repository, ProjetoValidator $validator)
+    /**
+     * projetoFileService constructor.
+     * @param ProjetoRepository $repository
+     * @param Validator $validator
+     * @param Filesystem $filesystem
+     * @param Storage $storage
+     */
+    public function __construct(ProjetoRepository $repository, Validator $validator, Filesystem $filesystem, Storage $storage)
     {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->filesystem = $filesystem;
+        $this->storage = $storage;
     }
 
     public function create(array $data)
@@ -46,26 +65,11 @@ class projetoService
         }
     }
 
-    public function addMenbro()
-    {
-        //
-    }
-
-    public function removeMenbro()
-    {
-        //
-    }
-
-    public function isMenbro()
-    {
-        //
-    }
-
     public function createFile(array $data)
     {
         $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
         $projeto->files()->create($data);
-        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
+        $this->storage->put($data['nome'] . "." . $data['extensao'], $this->filesystem->get($data['file']));
 
     }
 
@@ -73,7 +77,7 @@ class projetoService
     {
         $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
         $projeto->files()->create($data);
-        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
+        $this->storage->put($data['nome'] . "." . $data['extensao'], $this->filesystem->get($data['file']));
 
     }
 
@@ -85,6 +89,6 @@ class projetoService
 
     private function getBaseURL($projetoFile)
     {
-        
+
     }
 }

@@ -2,11 +2,9 @@
 
 namespace projetoModuloLaravel\Http\Controllers;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use projetoModuloLaravel\Repositories\ProjetoRepository;
-use projetoModuloLaravel\Services\ProjetoService;
+use projetoModuloLaravel\Services\ProjetoFileService;
 use Illuminate\Http\Request;
 
 class ProjetoFileController extends Controller
@@ -14,7 +12,7 @@ class ProjetoFileController extends Controller
     private $repository;
     private $service;
 
-    public function __construct(ProjetoRepository $repository, ProjetoService $service)
+    public function __construct(ProjetoRepository $repository, ProjetoFileService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -40,8 +38,14 @@ class ProjetoFileController extends Controller
     {
         $file = $request->file('file');
         $extensao = $file->getClientOriginalExtension();
-        Storage::put($request->nome . "." . $extensao, File::get($file));
-//        return $this->service->create($request->all());
+
+        $data['file'] = $file;
+        $data['extensao'] = $extensao;
+        $data['nome'] = $request->nome;
+        $data['projeto_id'] = $request->projeto_id;
+        $data['descricao'] = $request->descricao;
+
+        return $this->service->createFile($data);
     }
 
     /**
