@@ -15,7 +15,7 @@ class CreateProjetoTaskTables extends Migration
         Schema::create('projeto_tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('projeto_id')->unsigned();
-            $table->foreign('projeto_id')->references('id')->on('projetos')->onDelete('cascade');
+            $table->foreign('projeto_id')->references('id')->on('projetos');
             $table->string('nome');
             $table->date('start_date');
             $table->date('due_date');

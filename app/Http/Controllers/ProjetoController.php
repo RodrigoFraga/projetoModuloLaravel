@@ -53,6 +53,7 @@ class ProjetoController extends Controller
         if ($this->checkAutorizacao($id) == false) {
             return ['error' => 'Não Autorizado'];
         }
+
         try {
             return $this->repository->find($id);
 
@@ -73,10 +74,19 @@ class ProjetoController extends Controller
     public function update(Request $request, $id)
     {
         if ($this->checkProjetoOwner($id) == false) {
-            return ['error' => 'erro forbiden'];
+            return ['error' => 'Não Autorizado'];
         }
+        try {
+            $this->service->update($request->all(), $id);
 
-        return $this->service->update($request->all(), $id);
+            return ['success' => false, $this->modelName . ' atualizado com sucesso!'];
+        } catch (QueryException $e) {
+            return ['error' => true, $this->modelName . ' não pode ser atualizado.'];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, $this->modelName . ' não encontrado.'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'Ocorreu algum erro ao atualizar o ' . $this->modelName];
+        }
     }
 
     /**
@@ -92,14 +102,14 @@ class ProjetoController extends Controller
         }
 
         try {
-            $this->repository->findOrFail($id)->delete();
-            return ['success' => true, 'Projeto deletado com sucesso!'];
+            $this->repository->skipPresenter()->find($id)->delete();
+            return ['success' => true, $this->modelName . ' deletado com sucesso!'];
         } catch (QueryException $e) {
-            return ['error' => true, 'Projeto não pode ser apagado pois existe um ou mais clientes vinculados a ele.'];
+            return ['error' => true, $this->modelName . ' não pode ser apagado pois existe um ou mais clientes vinculados a ele.'];
         } catch (ModelNotFoundException $e) {
-            return ['error' => true, 'Projeto não encontrado.'];
+            return ['error' => true, $this->modelName . ' não encontrado.'];
         } catch (\Exception $e) {
-            return ['error' => true, 'Ocorreu algum erro ao excluir o projeto.'];
+            return ['error' => true, 'Ocorreu algum erro ao excluir o ' . $this->modelName];
         }
     }
 

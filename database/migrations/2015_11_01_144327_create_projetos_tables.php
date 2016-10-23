@@ -15,9 +15,9 @@ class CreateProjetosTables extends Migration
         Schema::create('projetos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('owner_id')->unsigned();
-            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('owner_id')->references('id')->on('users');
             $table->integer('cliente_id')->unsigned();
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
+            $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->string('nome');
             $table->text('descricao');
             $table->smallInteger('progresso');
