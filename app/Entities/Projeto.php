@@ -11,32 +11,37 @@ class Projeto extends Model implements Transformable
     use TransformableTrait;
 
     protected $fillable = [
-    	'owner_id',
-		'cliente_id',
-		'nome',
-		'descricao',
-		'progresso',
-		'status',
-		'due_date'
+        'owner_id',
+        'cliente_id',
+        'nome',
+        'descricao',
+        'progresso',
+        'status',
+        'due_date'
     ];
 
-    public function notas(){
-    	return $this->hasMany(ProjetoNota::class);
+    public function notas()
+    {
+        return $this->hasMany(ProjetoNota::class);
     }
 
-    public function menbros(){
+    public function menbros()
+    {
         return $this->belongsToMany(User::class, 'projeto_menbros', 'projeto_id', 'menbro_id');
     }
 
-    public function cliente(){
+    public function cliente()
+    {
         return $this->belongsTo(Cliente::class);
     }
 
-    public function tasks(){
+    public function tasks()
+    {
         return $this->hasMany(ProjetoTask::class);
     }
 
-    public function files(){
+    public function files()
+    {
         return $this->hasMany(ProjetoFile::class);
     }
 

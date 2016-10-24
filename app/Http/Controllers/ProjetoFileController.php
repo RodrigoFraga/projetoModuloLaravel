@@ -3,7 +3,7 @@
 namespace projetoModuloLaravel\Http\Controllers;
 
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
-use projetoModuloLaravel\Repositories\ProjetoRepository;
+use projetoModuloLaravel\Repositories\ProjetoFileRepository as Repository;
 use projetoModuloLaravel\Services\ProjetoFileService;
 use Illuminate\Http\Request;
 
@@ -11,8 +11,9 @@ class ProjetoFileController extends Controller
 {
     private $repository;
     private $service;
+    private $modelName = 'Arquivo do Projeto';
 
-    public function __construct(ProjetoRepository $repository, ProjetoFileService $service)
+    public function __construct(Repository $repository, ProjetoFileService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -23,9 +24,9 @@ class ProjetoFileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return $this->repository->findOwner(Authorizer::getResourceOwnerId(), 4);
+        return $this->repository->findWhere(['projeto_id' => $id]);
     }
 
     /**
@@ -34,7 +35,7 @@ class ProjetoFileController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $file = $request->file('file');
         $extensao = $file->getClientOriginalExtension();
@@ -45,7 +46,7 @@ class ProjetoFileController extends Controller
         $data['projeto_id'] = $request->projeto_id;
         $data['descricao'] = $request->descricao;
 
-        return $this->service->createFile($data);
+        return $this->service->create($data);
     }
 
     /**
@@ -54,12 +55,26 @@ class ProjetoFileController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $fileId)
     {
-        if ($this->checkAutorizacao($id) == false) {
+        if ($this->service->checkAutorizacao($id) == false) {
             return ['error' => 'Não Autorizado'];
         }
         return $this->repository->find($id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showFile($id, $fileId)
+    {
+        if ($this->service->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+        return response()->download($this->service->getFilePath($id, $fileId));
     }
 
     /**
@@ -71,7 +86,7 @@ class ProjetoFileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->checkProjetoOwner($id) == false) {
+        if ($this->service->checkProjetoOwner($id) == false) {
             return ['error' => 'erro forbiden'];
         }
 
@@ -84,34 +99,23 @@ class ProjetoFileController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $fileId)
     {
-        if ($this->checkProjetoOwner($id) == false) {
+        if ($this->service->checkProjetoOwner($id) == false) {
             return ['error' => 'erro forbiden'];
         }
 
-        $this->repository->delete($id);
-    }
+        try {
+            $this->service->destroy($id, $fileId);
 
-    private function checkProjetoOwner($projetoId)
-    {
-        $userId = Authorizer::getResourceOwnerId();
-
-        return $this->repository->isOwner($projetoId, $userId);
-    }
-
-    private function checkProjetoMenbro($projetoId)
-    {
-        $userId = Authorizer::getResourceOwnerId();
-
-        return $this->repository->hasMenbro($projetoId, $userId);
-    }
-
-    private function checkAutorizacao($projetoId)
-    {
-        if ($this->checkProjetoOwner($projetoId) or $this->checkProjetoMenbro($projetoId)) {
-            return true;
+            return ['success' => true, $this->modelName . ' deletado com sucesso!'];
+        } catch (QueryException $e) {
+            return ['error' => true, $this->modelName . ' não pode ser apagado pois existe um ou mais projetos vinculados a ele.'];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, $this->modelName . ' não encontrado.'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'Ocorreu algum erro ao excluir o ' . $this->modelName];
         }
-        return false;
+
     }
 }

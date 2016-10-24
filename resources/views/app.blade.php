@@ -49,6 +49,7 @@
     <script src="{{asset('build/js/vendor/query-string.js')}}"></script>
     <script src="{{asset('build/js/vendor/angular-cookies.min.js')}}"></script>
     <script src="{{asset('build/js/vendor/angular-oauth2.min.js')}}"></script>
+    <script src="{{asset('build/js/vendor/ng-file-upload.min.js')}}"></script>
     <script src="{{asset('build/js/vendor/http-auth-interceptor.js')}}"></script>
 
     {{--Add foara do curso--}}

@@ -2,6 +2,7 @@
 
 namespace projetoModuloLaravel\Http\Controllers;
 
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use projetoModuloLaravel\Repositories\ProjetoTaskRepository;
 use projetoModuloLaravel\Services\ProjetoTaskService;
 use Illuminate\Http\Request;
@@ -25,6 +26,9 @@ class ProjetoTaskController extends Controller
      */
     public function index($id)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
         return $this->repository->findWhere(['projeto_id' => $id]);
     }
 
@@ -36,6 +40,9 @@ class ProjetoTaskController extends Controller
      */
     public function store(Request $request, $id)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
         return $this->service->create($request->all());
     }
 
@@ -47,6 +54,10 @@ class ProjetoTaskController extends Controller
      */
     public function show($id, $task)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+
         try {
 
             $resultado = $this->repository->findWhere(['projeto_id' => $id, 'id' => $task]);
@@ -72,6 +83,10 @@ class ProjetoTaskController extends Controller
      */
     public function update(Request $request, $id, $task)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+
         try {
             $this->service->update($request->all(), $task);
 
@@ -93,6 +108,9 @@ class ProjetoTaskController extends Controller
      */
     public function destroy($id, $task)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
         try {
             $this->repository->skipPresenter()->find($task)->delete();
             return ['success' => true, $this->modelName . ' deletado com sucesso!'];
@@ -101,5 +119,28 @@ class ProjetoTaskController extends Controller
         } catch (\Exception $e) {
             return ['error' => true, 'Ocorreu algum erro ao excluir o ' . $this->modelName];
         }
+    }
+
+
+    private function checkProjetoOwner($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->projetoRepository->isOwner($projetoId, $userId);
+    }
+
+    private function checkProjetoMenbro($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->projetoRepository->hasMenbro($projetoId, $userId);
+    }
+
+    private function checkAutorizacao($projetoId)
+    {
+        if ($this->checkProjetoOwner($projetoId) or $this->checkProjetoMenbro($projetoId)) {
+            return true;
+        }
+        return false;
     }
 }

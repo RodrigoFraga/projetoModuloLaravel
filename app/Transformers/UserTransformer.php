@@ -21,7 +21,9 @@ class UserTransformer extends TransformerAbstract
     public function transform(User $model)
     {
         return [
-            'id'         => (int) $model->id,
+            'id' => (int)$model->id,
+            'name' => $model->name,
+            'email' => $model->email,
 
             /* place your other model properties here */
 

@@ -9,7 +9,9 @@ var app = angular.module('app', [
     'ngTable',
     'mgcrea.ngStrap.navbar',
     'ngSanitize',
-    'ui.select'
+    'ui.select',
+    'ngFileUpload'
+
 ]);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
@@ -88,8 +90,8 @@ app.config([
     '$routeProvider', 'OAuthProvider', '$httpProvider', 'OAuthTokenProvider', 'appConfigProvider',
     function ($routeProvider, OAuthProvider, $httpProvider, OAuthTokenProvider, appConfigProvider) {
 
-        $httpProvider.defaults.headers.post['content-type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-        $httpProvider.defaults.headers.put['content-type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         $httpProvider.defaults.transformResponse = appConfigProvider.config.utils.transformResponse;
 
         $httpProvider.interceptors.splice(0, 1);
@@ -169,6 +171,23 @@ app.config([
                 templateUrl: 'build/views/projeto-nota/remove.html',
                 controller: 'ProjetoNotaRemoveController'
             })
+            .when('/projeto/:id/file', {
+                templateUrl: 'build/views/projeto-nota/lista.html',
+                controller: 'ProjetoNotaListaController'
+            })
+            .when('/projeto/:id/file/novo', {
+                templateUrl: 'build/views/projeto-nota/novo.html',
+                controller: 'ProjetoNotaNovoController'
+            })
+            .when('/projeto/:id/file/:idNota/edita', {
+                templateUrl: 'build/views/projeto-nota/edita.html',
+                controller: 'ProjetoNotaEditaController'
+            })
+            .when('/projeto/:id/file/:idNota/remove', {
+                templateUrl: 'build/views/projeto-nota/remove.html',
+                controller: 'ProjetoNotaRemoveController'
+            })
+            .otherwise('/home')
         ;
 
 

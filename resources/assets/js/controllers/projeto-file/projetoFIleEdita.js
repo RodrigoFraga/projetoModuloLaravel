@@ -1,5 +1,5 @@
 angular.module('app.controllers')
-    .controller('ProjetoNotaEditaController',
+    .controller('ProjetoFileEditaController',
         ['$scope', '$location', '$routeParams', 'ProjetoNota',
             function ($scope, $location, $routeParams, ProjetoNota) {
 

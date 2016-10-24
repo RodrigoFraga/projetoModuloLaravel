@@ -61,30 +61,30 @@ class projetoService
         //
     }
 
-    public function createFile(array $data)
-    {
-        $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
-        $projeto->files()->create($data);
-        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
+//    public function createFile(array $data)
+//    {
+//        $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
+//        $projeto->files()->create($data);
+//        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
+//
+//    }
+//
+//    public function deleteFile(array $data)
+//    {
+//        $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
+//        $projeto->files()->create($data);
+//        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
+//
+//    }
 
-    }
+//    public function getFilePath($id)
+//    {
+//        $projetoFile = $this->repository->skipPresenter()->find($id);
+//        return $this->getBaseURL($projetoFile);
+//    }
 
-    public function deleteFile(array $data)
-    {
-        $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
-        $projeto->files()->create($data);
-        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
-
-    }
-
-    public function getFilePath($id)
-    {
-        $projetoFile = $this->repository->skipPresenter()->find($id);
-        return $this->getBaseURL($projetoFile);
-    }
-
-    private function getBaseURL($projetoFile)
-    {
-        
-    }
+//    private function getBaseURL($projetoFile)
+//    {
+//        
+//    }
 }

@@ -2,19 +2,23 @@
 
 namespace projetoModuloLaravel\Http\Controllers;
 
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use projetoModuloLaravel\Repositories\ProjetoNotaRepository;
+use projetoModuloLaravel\Repositories\ProjetoRepositoryEloquent as ProjetoRepository;
 use projetoModuloLaravel\Services\ProjetoNotaService;
 use Illuminate\Http\Request;
 
 class ProjetoNotaController extends Controller
 {
     private $repository;
+    private $projetoRepository;
     private $service;
     private $modelName = 'Projeto Nota';
 
-    public function __construct(ProjetoNotaRepository $repository, ProjetoNotaService $service)
+    public function __construct(ProjetoNotaRepository $repository, ProjetoNotaService $service, ProjetoRepository $projetoRepository)
     {
         $this->repository = $repository;
+        $this->projetoRepository = $projetoRepository;
         $this->service = $service;
     }
 
@@ -25,6 +29,10 @@ class ProjetoNotaController extends Controller
      */
     public function index($id)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+
         return $this->repository->findWhere(['projeto_id' => $id]);
     }
 
@@ -47,6 +55,10 @@ class ProjetoNotaController extends Controller
      */
     public function show($id, $notaId)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+
         try {
             $resultado = $this->repository->findWhere(['projeto_id' => $id, 'id' => $notaId]);
             if (isset($resultado['data']) && count($resultado['data']) == 1) {
@@ -72,6 +84,10 @@ class ProjetoNotaController extends Controller
      */
     public function update(Request $request, $id, $notaId)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+
         try {
             $this->service->update($request->all(), $notaId);
 
@@ -93,6 +109,10 @@ class ProjetoNotaController extends Controller
      */
     public function destroy($id, $notaId)
     {
+        if ($this->checkAutorizacao($id) == false) {
+            return ['error' => 'Não Autorizado'];
+        }
+
         try {
             $this->repository->skipPresenter()->find($notaId)->delete();
             return ['success' => true, $this->modelName . ' deletado com sucesso!'];
@@ -101,5 +121,27 @@ class ProjetoNotaController extends Controller
         } catch (\Exception $e) {
             return ['error' => true, 'Ocorreu algum erro ao excluir o ' . $this->modelName];
         }
+    }
+
+    private function checkProjetoOwner($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->projetoRepository->isOwner($projetoId, $userId);
+    }
+
+    private function checkProjetoMenbro($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->projetoRepository->hasMenbro($projetoId, $userId);
+    }
+
+    private function checkAutorizacao($projetoId)
+    {
+        if ($this->checkProjetoOwner($projetoId) or $this->checkProjetoMenbro($projetoId)) {
+            return true;
+        }
+        return false;
     }
 }
