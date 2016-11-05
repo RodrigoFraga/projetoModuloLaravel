@@ -61,6 +61,9 @@ app.provider('appConfig', function () {
                 {value: 3, label: 'concluido'}
             ]
         },
+        urls: {
+            projetoFile: 'projeto/{{id}}/file/{{idFile}}'
+        },
         utils: {
             transformResponse: function (data, headers) {
                 var headersGetter = headers();
@@ -172,20 +175,20 @@ app.config([
                 controller: 'ProjetoNotaRemoveController'
             })
             .when('/projeto/:id/file', {
-                templateUrl: 'build/views/projeto-nota/lista.html',
-                controller: 'ProjetoNotaListaController'
+                templateUrl: 'build/views/projeto-file/lista.html',
+                controller: 'ProjetoFileListaController'
             })
             .when('/projeto/:id/file/novo', {
-                templateUrl: 'build/views/projeto-nota/novo.html',
-                controller: 'ProjetoNotaNovoController'
+                templateUrl: 'build/views/projeto-file/novo.html',
+                controller: 'ProjetoFileNovoController'
             })
-            .when('/projeto/:id/file/:idNota/edita', {
-                templateUrl: 'build/views/projeto-nota/edita.html',
-                controller: 'ProjetoNotaEditaController'
+            .when('/projeto/:id/file/:idFile/edita', {
+                templateUrl: 'build/views/projeto-file/edita.html',
+                controller: 'ProjetoFileEditaController'
             })
-            .when('/projeto/:id/file/:idNota/remove', {
-                templateUrl: 'build/views/projeto-nota/remove.html',
-                controller: 'ProjetoNotaRemoveController'
+            .when('/projeto/:id/file/:idFile/remove', {
+                templateUrl: 'build/views/projeto-file/remove.html',
+                controller: 'ProjetoFileRemoveController'
             })
             .otherwise('/home')
         ;

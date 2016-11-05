@@ -1,5 +1,5 @@
 angular.module('app.controllers')
-	.controller('ProjetoNotaListaController', 
-		['$scope', '$routeParams', 'ProjetoNota', function($scope, $routeParams, ProjetoNota){
-		$scope.projetoNotas = ProjetoNota.query({id: $routeParams.id});
-	}]);
+    .controller('ProjetoFileListaController',
+        ['$scope', '$routeParams', 'ProjetoFile', function ($scope, $routeParams, ProjetoFile) {
+            $scope.projetoFiles = ProjetoFile.query({id: $routeParams.id});
+        }]);

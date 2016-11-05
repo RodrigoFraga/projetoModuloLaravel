@@ -37,6 +37,10 @@ class projetoModuloLaravelServiceProvider extends ServiceProvider
             \projetoModuloLaravel\Repositories\ProjetoNotaRepositoryEloquent::class
         );
         $this->app->bind(
+            \projetoModuloLaravel\Repositories\ProjetoFileRepository::class,
+            \projetoModuloLaravel\Repositories\ProjetoFileRepositoryEloquent::class
+        );
+        $this->app->bind(
             \projetoModuloLaravel\Repositories\UserRepository::class,
             \projetoModuloLaravel\Repositories\UserRepositoryEloquent::class
         );

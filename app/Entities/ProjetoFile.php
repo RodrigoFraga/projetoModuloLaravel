@@ -12,13 +12,22 @@ class ProjetoFile extends Model implements Transformable
 
     protected $fillable = [
         'projeto_id',
-    	'nome',
-    	'descricao',
-    	'extensao'
+        'nome',
+        'descricao',
+        'extensao'
     ];
 
-    public function projeto(){
-    	return $this->belongsTo(Projeto::class);
+    public function projeto()
+    {
+        return $this->belongsTo(Projeto::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilename()
+    {
+        return $this->id . '.' . $this->extensao;
     }
 
 }

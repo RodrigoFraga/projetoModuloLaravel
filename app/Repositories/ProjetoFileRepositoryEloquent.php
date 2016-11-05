@@ -4,7 +4,7 @@ namespace projetoModuloLaravel\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use projetoModuloLaravel\Repositories\ProjetoTaskRepository;
+use projetoModuloLaravel\Presenters\ProjetoFilePresenter;
 use projetoModuloLaravel\Entities\ProjetoFile;
 
 /**
@@ -29,5 +29,10 @@ class ProjetoFileRepositoryEloquent extends BaseRepository implements ProjetoFil
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return ProjetoFilePresenter::class;
     }
 }

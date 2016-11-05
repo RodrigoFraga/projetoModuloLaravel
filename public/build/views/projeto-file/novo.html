@@ -2,33 +2,45 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Cadastro de notas de projeto</div>
+                <div class="panel-heading">Cadastro de arquivos de projeto</div>
                 <div class="panel-body">
 
                     <form class="form-horizontal" name="form" role="form" method="POST" ng-submit="save()">
 
-                        <div class="form-group" ng-class="{'has-error': !form.titulo.$valid && form.titulo.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !form.nome.$valid && form.nome.$touched}">
                             <label class="col-md-4 control-label">Titulo</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="titulo" ng-model="projetoNota.titulo"
+                                <input type="text" class="form-control" name="nome" ng-model="projetoFile.nome"
                                        required>
-                                <div ng-messages="form.titulo.$error" class="help-block" ng-show="form.titulo.$touched">
+                                <div ng-messages="form.nome.$error" class="help-block" ng-show="form.nome.$touched">
                                     <div ng-message="required">Campo Obrigatorio</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group"
-                             ng-class="{'has-error': !form.conteudo.$valid && form.conteudo.$touched}">
-                            <label class="col-md-4 control-label">Conteudo</label>
+                             ng-class="{'has-error': !form.descricao.$valid && form.descricao.$touched}">
+                            <label class="col-md-4 control-label">Descrição</label>
 
                             <div class="col-md-6">
-                                <textarea class="form-control input-sm" name="conteudo"
-                                          ng-model="projetoNota.conteudo"
+                                <textarea class="form-control input-sm" name="descricao"
+                                          ng-model="projetoFile.descricao"
                                           required>
                                 </textarea>
-                                <div ng-messages="form.conteudo.$error" class="help-block"
-                                     ng-show="form.conteudo.$touched">
+                                <div ng-messages="form.descricao.$error" class="help-block"
+                                     ng-show="form.descricao.$touched">
+                                    <div ng-message="required">Campo Obrigatorio</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !form.file.$valid && form.file.$touched}">
+                            <label class="col-md-4 control-label">Arquivo</label>
+                            <div class="col-md-6">
+                                <div class="btn btn-info" ngf-select ng-model="projetoFile.file" name="file">Select
+                                </div>
+                                {{projetoFile.file.name}}
+                                <div ng-messages="form.file.$error" class="help-block" ng-show="form.file.$touched">
                                     <div ng-message="required">Campo Obrigatorio</div>
                                 </div>
                             </div>

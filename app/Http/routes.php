@@ -35,8 +35,8 @@ Route::group(['middleware' => 'oauth'], function () {
 
         Route::get('{id}/menbros', 'ProjetoController@menbros');
 
-        Route::get('{id}/file/{fileId}/download', 'ProjetoController@showFile');
-        Route::resource('{id}/file', 'ProjetoFileController@store');
+        Route::get('{id}/file/{fileId}/download', 'ProjetoFileController@showFile');
+        Route::resource('{id}/file', 'ProjetoFileController', ['except' => ['create', 'edit']]);
 
     });
 

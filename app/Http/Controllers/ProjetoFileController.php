@@ -60,7 +60,7 @@ class ProjetoFileController extends Controller
         if ($this->service->checkAutorizacao($id) == false) {
             return ['error' => 'Não Autorizado'];
         }
-        return $this->repository->find($id);
+        return $this->repository->find($fileId);
     }
 
     /**
@@ -74,7 +74,15 @@ class ProjetoFileController extends Controller
         if ($this->service->checkAutorizacao($id) == false) {
             return ['error' => 'Não Autorizado'];
         }
-        return response()->download($this->service->getFilePath($id, $fileId));
+        $filePath = $this->service->getFilePath($id, $fileId);
+        $fileContent = file_get_contents($filePath);
+        $file64 = base64_encode($fileContent);
+
+        return [
+            'file' => $file64,
+            'size' => filesize($filePath),
+            'name' => $this->service->getFileName($fileId)
+        ];
     }
 
     /**
@@ -84,13 +92,13 @@ class ProjetoFileController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $fileId)
     {
         if ($this->service->checkProjetoOwner($id) == false) {
             return ['error' => 'erro forbiden'];
         }
 
-        return $this->service->update($request->all(), $id);
+        return $this->service->update($request->all(), $id, $fileId);
     }
 
     /**
@@ -105,8 +113,8 @@ class ProjetoFileController extends Controller
             return ['error' => 'erro forbiden'];
         }
 
+        $this->service->destroy($id, $fileId);
         try {
-            $this->service->destroy($id, $fileId);
 
             return ['success' => true, $this->modelName . ' deletado com sucesso!'];
         } catch (QueryException $e) {

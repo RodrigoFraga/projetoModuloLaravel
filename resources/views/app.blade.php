@@ -80,8 +80,14 @@
     <script src="{{asset('build/js/controllers/projeto-nota/projetoNotaEdita.js')}}"></script>
     <script src="{{asset('build/js/controllers/projeto-nota/projetoNotaRemove.js')}}"></script>
 
+    <script src="{{asset('build/js/controllers/projeto-file/projetoFileLista.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-file/projetoFileNovo.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-file/projetoFileEdita.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-file/projetoFileRemove.js')}}"></script>
+
     <!-- DIRECTIVES -->
     <script src="{{asset('build/js/directives/loginForm.js')}}"></script>
+    <script src="{{asset('build/js/directives/projetoFileDownload.js')}}"></script>
     <script src="{{asset('build/js/directives/loadTemplate.js')}}"></script>
     <script src="{{asset('build/js/directives/menuActivated.js')}}"></script>
 
@@ -89,10 +95,12 @@
     <script src="{{asset('build/js/filters/date-br.js')}}"></script>
 
     <!-- SERVICES -->
+    <script src="{{asset('build/js/services/Url.js')}}"></script>
     <script src="{{asset('build/js/services/oauthFixInterceptor.js')}}"></script>
     <script src="{{asset('build/js/services/cliente.js')}}"></script>
     <script src="{{asset('build/js/services/projeto.js')}}"></script>
     <script src="{{asset('build/js/services/projetoNota.js')}}"></script>
+    <script src="{{asset('build/js/services/projetoFile.js')}}"></script>
     <script src="{{asset('build/js/services/user.js')}}"></script>
 @else
     <script src="{{elixir('js/all.js')}}"></script>

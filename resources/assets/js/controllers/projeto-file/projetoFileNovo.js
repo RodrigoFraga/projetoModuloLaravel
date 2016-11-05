@@ -1,16 +1,26 @@
 angular.module('app.controllers')
-	.controller('ProjetoNotaNovoController',
-		['$scope', '$location', '$routeParams', 'ProjetoNota', 
-		function($scope, $location, $routeParams, ProjetoNota){
+    .controller('ProjetoFileNovoController',
+        ['$scope', '$location', '$routeParams', 'appConfig', 'Url', 'Upload',
+            function ($scope, $location, $routeParams, appConfig, Url, Upload) {
 
-		$scope.projetoNota = new ProjetoNota();
-		$scope.projetoNota.projeto_id = $routeParams.id;
+                $scope.save = function () {
+                    var url = appConfig.baseUrl + '/' + Url.getUrlFromUrlSybol(appConfig.urls.projetoFile, {
+                            id: $routeParams.id,
+                            idFile: ''
+                        });
 
-		$scope.save = function(){
-			if ($scope.form.$valid) {
-				$scope.projetoNota.$save({id: $routeParams.id}).then(function(){
-					$location.path('/projeto/' + $routeParams.id + '/nota');
-				});
-			};
-		}
-	}]);
+                    if ($scope.form.$valid) {
+                        Upload.upload({
+                            url: url,
+                            data: {
+                                file: $scope.projetoFile.file,
+                                'nome': $scope.projetoFile.nome,
+                                'descricao': $scope.projetoFile.descricao,
+                                'projeto_id': $routeParams.id
+                            }
+                        }).then(function (resp) {
+                            $location.path('/projeto/' + $routeParams.id + '/file');
+                        });
+                    }
+                }
+            }]);

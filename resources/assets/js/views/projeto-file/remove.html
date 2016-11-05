@@ -1,26 +1,25 @@
-
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Exclusão de Cliente</div>
-				<div class="panel-body">
-					<div class="form-group">
-						<div class="col-md-6 col-md-offset-4">
-							<p>Deseja excluir realmente essa nota de Projeto ?</p>
-							<ul>
-								<li><strong>Tirulo</strong> {{ projetoNota.titulo }}</li>
-								<li><strong>Conteudo</strong> {{ projetoNota.conteudo }}</li>
-							</ul>
-							<button type="butto" class="btn btn-danger" ng-click="remove()">
-								Excluir
-							</button>
-						</div>
-					</div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Exclusão de Arquivo de projeto</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                            <p>Deseja excluir realmente essa nota de Projeto ?</p>
+                            <ul>
+                                <li><strong>Nome</strong> {{ projetoFile.nome }}</li>
+                                <li><strong>Descrição</strong> {{ projetoFile.descricao }}</li>
+                            </ul>
+                            <button type="butto" class="btn btn-danger" ng-click="remove()">
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
 
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
