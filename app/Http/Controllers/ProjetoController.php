@@ -4,6 +4,7 @@ namespace projetoModuloLaravel\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use projetoModuloLaravel\Repositories\ProjetoRepository;
 use projetoModuloLaravel\Services\ProjetoService;
@@ -19,6 +20,8 @@ class ProjetoController extends Controller
     {
         $this->repository = $repository;
         $this->service = $service;
+        $this->middleware('check.projeto.owner', ['except' => ['index', 'store', 'show', 'findWithMenber']]);
+        $this->middleware('check.projeto.permission', ['except' => ['index', 'store', 'show', 'findWithMenber']]);
     }
 
     /**
@@ -26,10 +29,21 @@ class ProjetoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->repository->findOwner(Authorizer::getResourceOwnerId(), 4);
+        return $this->repository->findOwner(Authorizer::getResourceOwnerId(), $request->query->get('limit'));
     }
+
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function findWithMenber(Request $request)
+    {
+        return $this->repository->findWithMenber(Authorizer::getResourceOwnerId(), $request->query->get('limit'));
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -55,10 +69,10 @@ class ProjetoController extends Controller
         }
 
         try {
-            return $this->repository->find($id);
+            return $this->repository->skipPresenter(false)->find($id);
 
         } catch (ModelNotFoundException $e) {
-            return ['error' => true, $this->modelName . 'não encontrado.'];
+            return ['error' => true, $this->modelName . 'não encontrado . '];
         } catch (\Exception $e) {
             return ['error' => true, 'Ocorreu algum erro ao recuperar o' . $this->modelName];
         }
@@ -81,9 +95,9 @@ class ProjetoController extends Controller
 
             return ['success' => false, $this->modelName . ' atualizado com sucesso!'];
         } catch (QueryException $e) {
-            return ['error' => true, $this->modelName . ' não pode ser atualizado.'];
+            return ['error' => true, $this->modelName . ' não pode ser atualizado . '];
         } catch (ModelNotFoundException $e) {
-            return ['error' => true, $this->modelName . ' não encontrado.'];
+            return ['error' => true, $this->modelName . ' não encontrado . '];
         } catch (\Exception $e) {
             return ['error' => true, 'Ocorreu algum erro ao atualizar o ' . $this->modelName];
         }
@@ -105,9 +119,9 @@ class ProjetoController extends Controller
             $this->repository->skipPresenter()->find($id)->delete();
             return ['success' => true, $this->modelName . ' deletado com sucesso!'];
         } catch (QueryException $e) {
-            return ['error' => true, $this->modelName . ' não pode ser apagado pois existe um ou mais clientes vinculados a ele.'];
+            return ['error' => true, $this->modelName . ' não pode ser apagado pois existe um ou mais clientes vinculados a ele . '];
         } catch (ModelNotFoundException $e) {
-            return ['error' => true, $this->modelName . ' não encontrado.'];
+            return ['error' => true, $this->modelName . ' não encontrado . '];
         } catch (\Exception $e) {
             return ['error' => true, 'Ocorreu algum erro ao excluir o ' . $this->modelName];
         }

@@ -6,9 +6,9 @@ use Prettus\Validator\LaravelValidator;
 
 class ProjetoTaskValidator extends LaravelValidator
 {
-	
-	protected $rules = [
-		'projeto_id'	=> 'required|integer',
-		'nome'	=> 'required',
-	];
+
+    protected $rules = [
+        'projeto_id' => 'required|integer',
+        'nome' => 'required',
+    ];
 }

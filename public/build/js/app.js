@@ -5,13 +5,17 @@ var app = angular.module('app', [
     "ui.bootstrap.datepicker",
     'ui.bootstrap.modal',
     'ui.bootstrap.dropdown',
+    'ui.bootstrap.tabs',
     "ui.bootstrap.tpls",
     'ngTable',
     'mgcrea.ngStrap.navbar',
     'ngSanitize',
     'ui.select',
-    'ngFileUpload'
-
+    'ngFileUpload',
+    'angularUtils.directives.dirPagination',
+    'pusher-angular',
+    'ui-notification',
+    'angularMoment'
 ]);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
@@ -51,9 +55,10 @@ app.filter('propsFilter', function () {
     };
 });
 
-app.provider('appConfig', function () {
+app.provider('appConfig', ['$httpParamSerializerProvider', function ($httpParamSerializerProvider) {
     var config = {
         baseUrl: 'http://localhost:8000',
+        pusherKey: '492ae86d7626deb1b64e',
         projeto: {
             status: [
                 {value: 1, label: 'não iniciado'},
@@ -61,10 +66,22 @@ app.provider('appConfig', function () {
                 {value: 3, label: 'concluido'}
             ]
         },
+        projetoTask: {
+            status: [
+                {value: 0, label: 'Incompleta'},
+                {value: 1, label: 'Completa'},
+            ]
+        },
         urls: {
             projetoFile: 'projeto/{{id}}/file/{{idFile}}'
         },
         utils: {
+            transformRequest: function (data) {
+                if (angular.isObject(data)) {
+                    return $httpParamSerializerProvider.$get()(data);
+                }
+                return data;
+            },
             transformResponse: function (data, headers) {
                 var headersGetter = headers();
                 if (headersGetter['content-type'] == 'application/json') {
@@ -72,10 +89,8 @@ app.provider('appConfig', function () {
                     if (dataJson.hasOwnProperty('data') && Object.keys(dataJson).length == 1) {
                         dataJson = dataJson.data;
                     }
-                    ;
                     return dataJson;
                 }
-                ;
                 return data;
             }
         }
@@ -87,7 +102,7 @@ app.provider('appConfig', function () {
             return config;
         }
     }
-});
+}]);
 
 app.config([
     '$routeProvider', 'OAuthProvider', '$httpProvider', 'OAuthTokenProvider', 'appConfigProvider',
@@ -118,6 +133,11 @@ app.config([
                 templateUrl: 'build/views/home.html',
                 controller: 'HomeController'
             })
+            .when('/clientes/dashboard', {
+                templateUrl: 'build/views/cliente/dashboard.html',
+                controller: 'ClienteDashboardController',
+                title: 'Cliente',
+            })
             .when('/clientes', {
                 templateUrl: 'build/views/cliente/lista.html',
                 controller: 'ClienteListaController',
@@ -138,21 +158,30 @@ app.config([
                 controller: 'ClientRemoveController',
                 title: 'Cliente',
             })
+            .when('/projetos/dashboard', {
+                templateUrl: 'build/views/projeto/dashboard.html',
+                controller: 'ProjetoDashboardController',
+                title: 'Projetos',
+            })
             .when('/projetos', {
                 templateUrl: 'build/views/projeto/lista.html',
-                controller: 'ProjetoListaController'
+                controller: 'ProjetoListaController',
+                title: 'Projetos',
             })
             .when('/projetos/novo', {
                 templateUrl: 'build/views/projeto/novo.html',
-                controller: 'ProjetoNovoController'
+                controller: 'ProjetoNovoController',
+                title: 'Novo Projeto',
             })
             .when('/projetos/:id/edita', {
                 templateUrl: 'build/views/projeto/edita.html',
-                controller: 'ProjetoEditaController'
+                controller: 'ProjetoEditaController',
+                title: 'Edição do Projeto',
             })
             .when('/projetos/:id/remove', {
                 templateUrl: 'build/views/projeto/remove.html',
-                controller: 'ProjetoRemoveController'
+                controller: 'ProjetoRemoveController',
+                title: 'Remover Projeto',
             })
             .when('/projeto/:id/nota', {
                 templateUrl: 'build/views/projeto-nota/lista.html',
@@ -190,6 +219,34 @@ app.config([
                 templateUrl: 'build/views/projeto-file/remove.html',
                 controller: 'ProjetoFileRemoveController'
             })
+            .when('/projeto/:id/task', {
+                templateUrl: 'build/views/projeto-task/lista.html',
+                controller: 'ProjetoTaskListaController'
+            })
+            .when('/projeto/:id/task/novo', {
+                templateUrl: 'build/views/projeto-task/novo.html',
+                controller: 'ProjetoTaskNovoController'
+            })
+            .when('/projeto/:id/task/:taskId/edita', {
+                templateUrl: 'build/views/projeto-task/edita.html',
+                controller: 'ProjetoTaskEditaController'
+            })
+            .when('/projeto/:id/task/:taskId/remove', {
+                templateUrl: 'build/views/projeto-task/remove.html',
+                controller: 'ProjetoTaskRemoveController'
+            })
+            .when('/projeto/menbro/dashboard', {
+                templateUrl: 'build/views/projeto-menbro/dashboard.html',
+                controller: 'ProjetoMenbroDashboardController'
+            })
+            .when('/projeto/:id/menbro', {
+                templateUrl: 'build/views/projeto-menbro/lista.html',
+                controller: 'ProjetoMenbroListaController'
+            })
+            .when('/projeto/:id/menbro/:menbroId/remove', {
+                templateUrl: 'build/views/projeto-menbro/remove.html',
+                controller: 'ProjetoMenbroRemoveController'
+            })
             .otherwise('/home')
         ;
 
@@ -209,21 +266,72 @@ app.config([
         });
     }]);
 
-app.run(['$rootScope', '$location', '$modal', 'httpBuffer', 'OAuth',
-    function ($rootScope, $location, $modal, httpBuffer, OAuth) {
+app.run(['$rootScope', '$location', '$filter', '$modal', '$cookies', '$pusher', 'httpBuffer', 'OAuth', 'appConfig', 'Notification', 'amMoment',
+    function ($rootScope, $location, $filter, $modal, $cookies, $pusher, httpBuffer, OAuth, appConfig, Notification, amMoment) {
+        amMoment.changeLocale('pt-br'); // Configuração para moment.js
 
-        // event. É o evento atual
-        // next . É a proxima rota que o usuario quer acessar
-        // next . É rota atual que o usuario está acessando  obs. ela pode vir undefined pois pode não haver rota anterioir
+        $rootScope.$on('pusher-build', function (event, data) {
+            if (data.next.$$route.originalPath != '/login') {
+                if (OAuth.isAuthenticated()) {
+                    if (!window.client) {
+                        window.client = new Pusher(appConfig.pusherKey);
+                        var pusher = $pusher(window.client);
+                        var channel = pusher.subscribe('user.' + $cookies.getObject('user').id);
+                        channel.bind('projetoModuloLaravel\\Events\\TaskWasIncluded', function (data) {
+                            var nome = data.task.nome,
+                                projeto = data.projeto.nome,
+                                date = $filter('date')(data.task.created_at, 'dd/MM/yyyy'),
+                                title = 'Tarefa Adicionada';
+
+                            Notification.success({
+                                title: title,
+                                message: '<ul class="list-unstyled">' +
+                                '<li>' + nome + '</li>' +
+                                '<li>Projeto - ' + projeto + '</li>' +
+                                '<li>Atualizado em <span class="pull-right">' + date + '</span></li></ul>'
+                            });
+                        });
+                        channel.bind('projetoModuloLaravel\\Events\\TaskWasUpdated', function (data) {
+                            var nome = data.task.nome,
+                                projeto = data.projeto.nome,
+                                date = $filter('date')(data.task.updated_at, 'dd/MM/yyyy'),
+                                title = 'Tarefa Alterada';
+
+                            if (data.task.status == 1) {
+                                title = 'Tarefa Concluida'
+                            }
+                            Notification.success({
+                                title: title,
+                                message: '<ul class="list-unstyled">' +
+                                '<li>' + nome + '</li>' +
+                                '<li>Projeto - ' + projeto + '</li>' +
+                                '<li>Atualizado em <span class="pull-right">' + date + '</span></li></ul>'
+                            });
+                        });
+                    }
+
+                }
+            }
+        });
+
+        $rootScope.$on('pusher-destroy', function (event, data) {
+            if (data.next.$$route.originalPath == '/login') {
+                if (window.client) {
+                    window.client.disconnect();
+                    window.client = null;
+                }
+            }
+        });
+
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
             if (next.$$route.originalPath != '/login') {
                 // Verifica se o usuario está logado
                 if (!OAuth.isAuthenticated()) {
                     $location.path('/login');
                 }
-                ;
             }
-            ;
+            $rootScope.$emit('pusher-build', {next: next});
+            $rootScope.$emit('pusher-destroy', {next: next});
         });
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
             $rootScope.PageTitiulo = current.$$route.title;
@@ -245,7 +353,6 @@ app.run(['$rootScope', '$location', '$modal', 'httpBuffer', 'OAuth',
                     });
                     $rootScope.loginModalOpened = true;
                 }
-                ;
                 return;
             }
 

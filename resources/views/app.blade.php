@@ -7,10 +7,12 @@
     <title>Laravel</title>
 
     @if(Config::get('app.debug'))
-        <link rel="stylesheet" href="{{asset('build/css/app.css')}}">
-        <link rel="stylesheet" href="{{asset('build/css/components.css')}}">
-        <link rel="stylesheet" href="{{asset('build/css/flaticon.css')}}">
         <link rel="stylesheet" href="{{asset('build/css/font-awesome.css')}}">
+        <link rel="stylesheet" href="{{asset('build/css/flaticon.css')}}">
+        <link rel="stylesheet" href="{{asset('build/css/components.css')}}">
+        <link rel="stylesheet" href="{{asset('build/css/app.css')}}">
+        <link rel="stylesheet" href="{{asset('build/css/vendor/angular-ui-notification.min.css')}}">
+
         <link rel="stylesheet" href="{{asset('build/css/vendor/ng-table.min.css')}}">
         <link rel="stylesheet" href="{{asset('build/css/vendor/select.min.css')}}">
     @else
@@ -51,6 +53,13 @@
     <script src="{{asset('build/js/vendor/angular-oauth2.min.js')}}"></script>
     <script src="{{asset('build/js/vendor/ng-file-upload.min.js')}}"></script>
     <script src="{{asset('build/js/vendor/http-auth-interceptor.js')}}"></script>
+    <script src="{{asset('build/js/vendor/dirPagination.js')}}"></script>
+    <script src="{{asset('build/js/vendor/pusher.js')}}"></script>
+    <script src="{{asset('build/js/vendor/pusher-angular.min.js')}}"></script>
+    <script src="{{asset('build/js/vendor/angular-ui-notification.min.js')}}"></script>
+    <script src="{{asset('build/js/vendor/moment.js')}}"></script>
+    <script src="{{asset('build/js/vendor/angular-moment.min.js')}}"></script>
+    <script src="{{asset('build/js/vendor/pt-br.js')}}"></script>
 
     {{--Add foara do curso--}}
     <script src="{{asset('build/js/vendor/ng-table.min.js')}}"></script>
@@ -64,11 +73,13 @@
     <script src="{{asset('build/js/controllers/loginModal.js')}}"></script>
     <script src="{{asset('build/js/controllers/home.js')}}"></script>
 
+    <script src="{{asset('build/js/controllers/cliente/clienteDashboard.js')}}"></script>
     <script src="{{asset('build/js/controllers/cliente/clienteLista.js')}}"></script>
     <script src="{{asset('build/js/controllers/cliente/clienteNovo.js')}}"></script>
     <script src="{{asset('build/js/controllers/cliente/clienteEdita.js')}}"></script>
     <script src="{{asset('build/js/controllers/cliente/clienteRemove.js')}}"></script>
 
+    <script src="{{asset('build/js/controllers/projeto/projetoDashboard.js')}}"></script>
     <script src="{{asset('build/js/controllers/projeto/projetoLista.js')}}"></script>
     <script src="{{asset('build/js/controllers/projeto/projetoNovo.js')}}"></script>
     <script src="{{asset('build/js/controllers/projeto/projetoEdita.js')}}"></script>
@@ -85,9 +96,19 @@
     <script src="{{asset('build/js/controllers/projeto-file/projetoFileEdita.js')}}"></script>
     <script src="{{asset('build/js/controllers/projeto-file/projetoFileRemove.js')}}"></script>
 
+    <script src="{{asset('build/js/controllers/projeto-task/projetoTaskLista.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-task/projetoTaskNovo.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-task/projetoTaskEdita.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-task/projetoTaskRemove.js')}}"></script>
+
+    <script src="{{asset('build/js/controllers/projeto-menbro/projetoMenbroDashboard.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-menbro/projetoMenbroLista.js')}}"></script>
+    <script src="{{asset('build/js/controllers/projeto-menbro/projetoMenbroRemove.js')}}"></script>
+
     <!-- DIRECTIVES -->
     <script src="{{asset('build/js/directives/loginForm.js')}}"></script>
     <script src="{{asset('build/js/directives/projetoFileDownload.js')}}"></script>
+    <script src="{{asset('build/js/directives/tabProject.js')}}"></script>
     <script src="{{asset('build/js/directives/loadTemplate.js')}}"></script>
     <script src="{{asset('build/js/directives/menuActivated.js')}}"></script>
 
@@ -100,10 +121,13 @@
     <script src="{{asset('build/js/services/cliente.js')}}"></script>
     <script src="{{asset('build/js/services/projeto.js')}}"></script>
     <script src="{{asset('build/js/services/projetoNota.js')}}"></script>
+    <script src="{{asset('build/js/services/projetoMenbro.js')}}"></script>
+    <script src="{{asset('build/js/services/projetoTask.js')}}"></script>
     <script src="{{asset('build/js/services/projetoFile.js')}}"></script>
     <script src="{{asset('build/js/services/user.js')}}"></script>
 @else
     <script src="{{elixir('js/all.js')}}"></script>
 @endif
+
 </body>
 </html>

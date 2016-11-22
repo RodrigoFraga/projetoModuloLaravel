@@ -8,38 +8,43 @@
                         <span class="text">Project Manager</span>
                     </a> <!-- /brand -->
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <menu class="menu" menu-activated>
                         <li data-match-route="/home">
                             <a href="#/home">
                                 <i class="fa fa-home"></i> Painel
                             </a>
                         </li>
-                        <li data-match-route="/projetos">
-                            <a href="#/projetos">
+                        <li data-match-route="/projeto.*">
+                            <a href="#/projetos/dashboard">
                                 <i class="flaticon-data-analytics1"></i> Projetos
                             </a>
                         </li>
-                        <li data-match-route="/clientes">
-                            <a href="#/clientes">
+                        <li data-match-route="/menbro.*">
+                            <a href="#/projeto/menbro/dashboard">
+                                <i class="flaticon-data-analytics1"></i> Projetos Menbro
+                            </a>
+                        </li>
+                        <li data-match-route="/cliente.*">
+                            <a href="#/clientes/dashboard">
                                 <i class="flaticon-office-worker2"></i> Clientes
                             </a>
                         </li>
-                        
+
                     </menu> <!-- /menu -->
                 </div>
                 <div class="col-sm-2">
                     <form action="" class="form-inline" role="form">
-                        <input type="text" name="q" placeholder="Busca" />
+                        <input type="text" name="q" placeholder="Busca"/>
                         <button type="submit">
                             <i class="fa fa-search"></i>
                         </button>
                     </form> <!-- /form-search -->
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <a href="" class="userinfo">
                         <i class="avatar flaticon-user7"></i>
-                        Olá, User
+                        Olá, {{user.name}}
                     </a>
                     <a href="#/logout" class="userinfo">
                         <i class="fa fa-sign-out"></i>

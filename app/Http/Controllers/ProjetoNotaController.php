@@ -29,10 +29,6 @@ class ProjetoNotaController extends Controller
      */
     public function index($id)
     {
-        if ($this->checkAutorizacao($id) == false) {
-            return ['error' => 'Não Autorizado'];
-        }
-
         return $this->repository->findWhere(['projeto_id' => $id]);
     }
 
@@ -44,7 +40,9 @@ class ProjetoNotaController extends Controller
      */
     public function store(Request $request, $id)
     {
-        return $this->service->create($request->all());
+        $data = $request->all();
+        $data['projeto_id'] = $id;
+        return $this->service->create($data);
     }
 
     /**
@@ -55,10 +53,6 @@ class ProjetoNotaController extends Controller
      */
     public function show($id, $notaId)
     {
-        if ($this->checkAutorizacao($id) == false) {
-            return ['error' => 'Não Autorizado'];
-        }
-
         try {
             $resultado = $this->repository->findWhere(['projeto_id' => $id, 'id' => $notaId]);
             if (isset($resultado['data']) && count($resultado['data']) == 1) {
@@ -84,12 +78,10 @@ class ProjetoNotaController extends Controller
      */
     public function update(Request $request, $id, $notaId)
     {
-        if ($this->checkAutorizacao($id) == false) {
-            return ['error' => 'Não Autorizado'];
-        }
-
+        $data = $request->all();
+        $data['projeto_id'] = $id;
         try {
-            $this->service->update($request->all(), $notaId);
+            $this->service->update($data, $notaId);
 
             return ['success' => false, $this->modelName . ' atualizado com sucesso!'];
         } catch (QueryException $e) {
@@ -109,10 +101,6 @@ class ProjetoNotaController extends Controller
      */
     public function destroy($id, $notaId)
     {
-        if ($this->checkAutorizacao($id) == false) {
-            return ['error' => 'Não Autorizado'];
-        }
-
         try {
             $this->repository->skipPresenter()->find($notaId)->delete();
             return ['success' => true, $this->modelName . ' deletado com sucesso!'];
@@ -123,7 +111,7 @@ class ProjetoNotaController extends Controller
         }
     }
 
-    private function checkProjetoOwner($projetoId)
+    /*private function checkProjetoOwner($projetoId)
     {
         $userId = Authorizer::getResourceOwnerId();
 
@@ -143,5 +131,5 @@ class ProjetoNotaController extends Controller
             return true;
         }
         return false;
-    }
+    }*/
 }

@@ -1,60 +1,43 @@
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Lista de Projeto</div>
-				<div class="panel-body">
-
-				<table ng-table="tableParams" class="table" show-filter="true">
-				    <tr ng-repeat="projeto in $data">
-				        <td title="'Nome'" sortable="'nome'">
-				            {{projeto.nome}}
-				        </td>
-				        <td title="'Cliente'" >
-				            {{projeto.cliente.nome}}
-				        </td>
-				        <td title="'Progresso'" >
-				        	{{projeto.progresso}}
-				        </td>
-						<td title="'Status'" >
-							{{projeto.status}}
-						</td>
-						<td title="'Due Dade'" >
-							{{projeto.due_date | dateBr}}
-						</td>
-						<td>
-							<a ng-href="#/projetos/{{projeto.id}}/edita">Editar</a> | 
-							<a ng-href="#/projetos/{{projeto.id}}/remove">Remover</a>
-						</td>
-				    </tr>
-				</table>
-				<!-- <table class="table">
-					<thead>
-						<tr>
-							<th>Nome</th>
-							<th>Cliente</th>
-							<th>Progresso</th>
-							<th>Status</th>
-							<th>Due Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="projeto in projetos">
-							<td>{{projeto.nome}}</td>
-							<td>{{projeto.cliente.nome}}</td>
-							<td>{{projeto.progresso}}</td>
-							<td>{{projeto.status}}</td>
-							<td>{{projeto.due_date | dateBr}}</td>
-							<td>
-								<a ng-href="#/projetos/{{projeto.id}}/edita">Editar</a> | 
-								<a ng-href="#/projetos/{{projeto.id}}/remove">Remover</a>
-							</td>
-						</tr>
-					</tbody>
-				</table> -->
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Lista de Projeto</div>
+                <table class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cliente</th>
+                            <th>Progresso</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr dir-paginate="projeto in projetos | itemsPerPage: projetosPerPage"
+                            total-items="totalProjetos" current-page="pagination.current">
+                            <td>{{projeto.nome}}</td>
+                            <td>{{projeto.cliente.nome}}</td>
+                            <td>{{projeto.progresso}}</td>
+                            <td>{{projeto.status}}</td>
+                            <td>{{projeto.due_date | dateBr}}</td>
+                            <td>
+                                <a ng-href="#/projetos/{{projeto.id}}/edita">Editar</a> |
+                                <a ng-href="#/projetos/{{projeto.id}}/remove">Remover</a>
+                                <br>
+                                <a ng-href="#/projeto/{{projeto.id}}/nota">Notas</a> |
+                                <a ng-href="#/projeto/{{projeto.id}}/task">Task</a> |
+                                <a ng-href="#/projeto/{{projeto.id}}/file">Arquivos</a> |
+                                <a ng-href="#/projeto/{{projeto.id}}/menbro">Menbros</a> |
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 

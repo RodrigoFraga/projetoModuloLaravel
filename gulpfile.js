@@ -27,6 +27,14 @@ config.vendor_path_js = [
     config.bower_path + '/ng-file-upload/ng-file-upload.min.js',
     config.bower_path + '/query-string/query-string.js',
     config.bower_path + '/angular-http-auth/src/http-auth-interceptor.js',
+    config.bower_path + '/angularUtils-pagination/dirPagination.js',
+    config.bower_path + '/pusher-websocket-iso/dist/web/pusher.js',
+    config.bower_path + '/pusher-angular/lib/pusher-angular.min.js',
+    config.bower_path + '/angular-ui-notification/dist/angular-ui-notification.min.js',
+
+    config.bower_path + '/moment/moment.js',
+    config.bower_path + '/angular-moment/angular-moment.min.js',
+    config.bower_path + '/moment/locale/pt-br.js',
 
     // Add Fora do Curso
     config.bower_path + '/ng-table/dist/ng-table.min.js',
@@ -39,7 +47,8 @@ config.vendor_path_css = [
     config.bower_path + '/bootstrap/dist/css/bootstrap.min.css',
     config.bower_path + '/bootstrap/dist/css/bootstrap-theme.min.css',
     config.bower_path + '/ng-table/dist/ng-table.min.css',
-    config.bower_path + '/angular-ui-select/dist/select.min.css'
+    config.bower_path + '/angular-ui-select/dist/select.min.css',
+    config.bower_path + '/angular-ui-notification/dist/angular-ui-notification.min.css'
 ];
 
 config.build_path_html = config.build_path + '/views';

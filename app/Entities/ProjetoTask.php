@@ -11,16 +11,16 @@ class ProjetoTask extends Model implements Transformable
     use TransformableTrait;
 
     protected $fillable = [
-    	'projeto_id',
-    	'nome',
-    	'start_date',
-    	'due_date',
-    	'status',
+        'projeto_id',
+        'nome',
+        'start_date',
+        'due_date',
+        'status',
     ];
 
-    public function projeto() 
+    public function projeto()
     {
-    	$this->belongsTo(Projeto::class);
+        return $this->belongsTo(Projeto::class);
     }
 
 }

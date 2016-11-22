@@ -21,15 +21,13 @@ Route::post('oauth/access_token', function () {
 
 Route::group(['middleware' => 'oauth'], function () {
     Route::resource('cliente', 'ClienteController', ['except' => ['create', 'edit']]);
+    Route::get('projetos/menbro', 'ProjetoController@findWithMenber');
     Route::resource('projetos', 'ProjetoController', ['except' => ['create', 'edit']]);
+    Route::resource('projetos.menbro', 'ProjetoMenbroController', ['except' => ['create', 'edit', 'update']]);
 
-    Route::group(['prefix' => 'projeto'], function () {
+    Route::group(['middleware' => 'check.projeto.permission', 'prefix' => 'projeto'], function () {
 
-        Route::get('{id}/nota', 'ProjetoNotaController@index');
-        Route::post('{id}/nota', 'ProjetoNotaController@store');
-        Route::get('{id}/nota/{notaId}', 'ProjetoNotaController@show');
-        Route::put('{id}/nota/{notaId}', 'ProjetoNotaController@update');
-        Route::delete('{id}/nota/{notaId}', 'ProjetoNotaController@destroy');
+        Route::resource('{id}/nota', 'ProjetoNotaController', ['except' => ['create', 'edit']]);
 
         Route::resource('{id}/task', 'ProjetoTaskController', ['except' => ['create', 'edit']]);
 
@@ -41,5 +39,6 @@ Route::group(['middleware' => 'oauth'], function () {
     });
 
     Route::get('user/authenticated', 'UserController@authenticated');
+    Route::resource('user', 'UserController', ['except' => ['create', 'edit']]);
 });
 

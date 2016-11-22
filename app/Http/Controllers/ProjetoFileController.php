@@ -43,7 +43,7 @@ class ProjetoFileController extends Controller
         $data['file'] = $file;
         $data['extensao'] = $extensao;
         $data['nome'] = $request->nome;
-        $data['projeto_id'] = $request->projeto_id;
+        $data['projeto_id'] = $id;
         $data['descricao'] = $request->descricao;
 
         return $this->service->create($data);
@@ -57,9 +57,6 @@ class ProjetoFileController extends Controller
      */
     public function show($id, $fileId)
     {
-        if ($this->service->checkAutorizacao($id) == false) {
-            return ['error' => 'Não Autorizado'];
-        }
         return $this->repository->find($fileId);
     }
 
@@ -71,9 +68,6 @@ class ProjetoFileController extends Controller
      */
     public function showFile($id, $fileId)
     {
-        if ($this->service->checkAutorizacao($id) == false) {
-            return ['error' => 'Não Autorizado'];
-        }
         $filePath = $this->service->getFilePath($id, $fileId);
         $fileContent = file_get_contents($filePath);
         $file64 = base64_encode($fileContent);
@@ -94,10 +88,6 @@ class ProjetoFileController extends Controller
      */
     public function update(Request $request, $id, $fileId)
     {
-        if ($this->service->checkProjetoOwner($id) == false) {
-            return ['error' => 'erro forbiden'];
-        }
-
         return $this->service->update($request->all(), $id, $fileId);
     }
 
@@ -109,10 +99,6 @@ class ProjetoFileController extends Controller
      */
     public function destroy($id, $fileId)
     {
-        if ($this->service->checkProjetoOwner($id) == false) {
-            return ['error' => 'erro forbiden'];
-        }
-
         $this->service->destroy($id, $fileId);
         try {
 

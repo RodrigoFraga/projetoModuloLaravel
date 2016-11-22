@@ -2,8 +2,7 @@
 
 namespace projetoModuloLaravel\Services;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use projetoModuloLaravel\Repositories\ProjetoRepository;
 use projetoModuloLaravel\Validators\ProjetoValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -61,30 +60,26 @@ class projetoService
         //
     }
 
-//    public function createFile(array $data)
-//    {
-//        $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
-//        $projeto->files()->create($data);
-//        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
-//
-//    }
-//
-//    public function deleteFile(array $data)
-//    {
-//        $projeto = $this->repository->skipPresenter()->find($data['projeto_id']);
-//        $projeto->files()->create($data);
-//        Storage::put($data['nome'] . "." . $data['extensao'], File::get($data['file']));
-//
-//    }
+    public function checkProjetoOwner($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
 
-//    public function getFilePath($id)
-//    {
-//        $projetoFile = $this->repository->skipPresenter()->find($id);
-//        return $this->getBaseURL($projetoFile);
-//    }
+        return $this->repository->isOwner($projetoId, $userId);
+    }
 
-//    private function getBaseURL($projetoFile)
-//    {
-//        
-//    }
+    public function checkProjetoMenbro($projetoId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->repository->hasMenbro($projetoId, $userId);
+    }
+
+    public function checkAutorizacao($projetoId)
+    {
+        if ($this->checkProjetoOwner($projetoId) or $this->checkProjetoMenbro($projetoId)) {
+            return true;
+        }
+        return false;
+    }
+
 }

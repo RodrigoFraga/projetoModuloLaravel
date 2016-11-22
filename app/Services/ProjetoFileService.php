@@ -108,7 +108,7 @@ class ProjetoFileService
         }
     }
 
-    public function checkProjetoOwner($projetoId)
+    /*public function checkProjetoOwner($projetoId)
     {
         $userId = Authorizer::getResourceOwnerId();
 
@@ -128,5 +128,5 @@ class ProjetoFileService
             return true;
         }
         return false;
-    }
+    }*/
 }

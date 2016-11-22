@@ -40,7 +40,7 @@ class ProjetoRepositoryEloquent extends BaseRepository implements ProjetoReposit
 
     public function isOwner($projetoId, $userId)
     {
-        if (count($this->findWhere(['id' => $projetoId, 'owner_id' => $userId]))) {
+        if (count($this->skipPresenter()->findWhere(['id' => $projetoId, 'owner_id' => $userId]))) {
             return true;
         }
         return false;
@@ -48,7 +48,7 @@ class ProjetoRepositoryEloquent extends BaseRepository implements ProjetoReposit
 
     public function hasMenbro($projetoId, $userId)
     {
-        $projeto = $this->find($projetoId);
+        $projeto = $this->skipPresenter()->find($projetoId);
 
         foreach ($projeto->menbros as $menbro) {
             if ($menbro->id == $userId) return true;
@@ -60,6 +60,24 @@ class ProjetoRepositoryEloquent extends BaseRepository implements ProjetoReposit
     {
         return $this->scopeQuery(function ($query) use ($userId) {
             return $query->select('projetos.*')->where('owner_id', '=', $userId);
+        })->paginate($limit, $columns);
+    }
+
+    public function findMenber($userId, $limit = null, $columns = array())
+    {
+        return $this->scopeQuery(function ($query) use ($userId) {
+            return $query->select('projetos.*')
+                ->leftJoin('projeto_menbros', 'projeto_menbros.projeto_id', '=', 'projetos.id')
+                ->where('projeto_menbros.menbro_id', '=', $userId);
+        })->paginate($limit, $columns);
+    }
+
+    public function findWithMenber($userId, $limit = null, $columns = array())
+    {
+        return $this->scopeQuery(function ($query) use ($userId) {
+            return $query->select('projetos.*')
+                ->leftJoin('projeto_menbros', 'projeto_menbros.projeto_id', '=', 'projetos.id')
+                ->where('projeto_menbros.menbro_id', '=', $userId);
         })->paginate($limit, $columns);
     }
 

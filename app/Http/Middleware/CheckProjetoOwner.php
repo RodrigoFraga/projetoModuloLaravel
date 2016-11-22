@@ -2,33 +2,31 @@
 
 namespace projetoModuloLaravel\Http\Middleware;
 
-use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use Closure;
-use projetoModuloLaravel\Repositories\ProjetoRepository;
+use projetoModuloLaravel\Services\ProjetoService;
 
 class CheckProjetoOwner
 {
-    private $repository;
+    private $service;
 
-    public function __construct(ProjetoRepository $repository)
+    public function __construct(ProjetoService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        $userId = Authorizer::getResourceOwnerId();
-        $id = $request->projeto;
+        $projetoId = $request->route('id') ? $request->route('id') : $request->route('projetos');
 
-        if($this->repository->isOwner($id, $userId) == false){
-            return ['sussess' => false];
+        if ($this->service->checkProjetoOwner($projetoId) == false) {
+            return ['error' => 'Access forbidden'];
         }
         return $next($request);
     }
