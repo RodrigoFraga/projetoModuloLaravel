@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('app');
 });
 
+Route::post('auth/authenticate', 'AuthenticateController@authenticate');
+Route::post('auth/register', 'AuthenticateController@register');
+
 Route::post('oauth/access_token', function () {
     return Response::json(Authorizer::issueAccessToken());
 });
